@@ -1,9 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://lagelateriaderoses.com/</loc>
-    <lastmod>2026-05-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-05-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagelateriaderoses.com/"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://lagelateriaderoses.com/ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagelateriaderoses.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://lagelateriaderoses.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://lagelateriaderoses.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://lagelateriaderoses.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
+  </url>
+  <url>
+    <loc>https://lagelateriaderoses.com/ca/</loc>
+    <lastmod>2026-05-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagelateriaderoses.com/"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://lagelateriaderoses.com/ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagelateriaderoses.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://lagelateriaderoses.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://lagelateriaderoses.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://lagelateriaderoses.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
+  </url>
+  <url>
+    <loc>https://lagelateriaderoses.com/en/</loc>
+    <lastmod>2026-05-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagelateriaderoses.com/"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://lagelateriaderoses.com/ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagelateriaderoses.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://lagelateriaderoses.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://lagelateriaderoses.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://lagelateriaderoses.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
+  </url>
+  <url>
+    <loc>https://lagelateriaderoses.com/fr/</loc>
+    <lastmod>2026-05-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagelateriaderoses.com/"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://lagelateriaderoses.com/ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagelateriaderoses.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://lagelateriaderoses.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://lagelateriaderoses.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://lagelateriaderoses.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
+  </url>
+  <url>
+    <loc>https://lagelateriaderoses.com/nl/</loc>
+    <lastmod>2026-05-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagelateriaderoses.com/"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://lagelateriaderoses.com/ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagelateriaderoses.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://lagelateriaderoses.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://lagelateriaderoses.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://lagelateriaderoses.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
+  </url>
+  <url>
+    <loc>https://lagelateriaderoses.com/de/</loc>
+    <lastmod>2026-05-23</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagelateriaderoses.com/"/>
+    <xhtml:link rel="alternate" hreflang="ca" href="https://lagelateriaderoses.com/ca/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagelateriaderoses.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://lagelateriaderoses.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://lagelateriaderoses.com/nl/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://lagelateriaderoses.com/de/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
   </url>
 </urlset>
