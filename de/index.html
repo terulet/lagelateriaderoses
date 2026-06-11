@@ -30,9 +30,10 @@
 <link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍦</text></svg>"/>
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"IceCreamShop","@id":"https://lagelateriaderoses.com/#business","name":"La Gelateria de Roses","alternateName":["La Gelateria","Gelateria de Roses"],"url":"https://lagelateriaderoses.com/","telephone":"+34972253795","email":"info@lagelateriaderoses.com","priceRange":"€","servesCuisine":["Gelato artigianale","Helado artesanal","Ice cream","Crêpes","Gofres","Waffles","Milkshakes","Smoothies","Granizados"],"address":{"@type":"PostalAddress","streetAddress":"Carrer Pi i Sunyer 6","postalCode":"17480","addressLocality":"Roses","addressRegion":"Girona","addressCountry":"ES"},"geo":{"@type":"GeoCoordinates","latitude":42.2668,"longitude":3.176},"hasMap":"https://www.google.com/maps/place/?q=place_id:ChIJ2SAQYFJhuhIRpVJqYaT7svc","sameAs":["https://instagram.com/lagelateriaderoses"],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"11:00","closes":"23:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:30","closes":"00:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:30","closes":"23:30"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"672"},"availableLanguage":["es","ca","en","fr","nl","de"],"description":"Handwerkliche Eisdiele in Roses, Costa Brava. Italienisches Gelato täglich frisch, über 50 Sorten, Crêpes, Waffeln, Milchshakes, Smoothies und Slush.","inLanguage":"de"},{"@context":"https://schema.org","@type":"WebPage","name":"Eisdiele in Roses | Italienisches Eis & Gelato - La Gelateria de Roses","url":"https://lagelateriaderoses.com/de/","description":"Handwerkliche Eisdiele in Roses, Costa Brava. Italienisches Gelato täglich frisch, über 50 Sorten, Crêpes, Waffeln, Milchshakes, Smoothies und Slush.","inLanguage":"de","isPartOf":{"@type":"WebSite","name":"La Gelateria de Roses","url":"https://lagelateriaderoses.com/"},"about":{"@id":"https://lagelateriaderoses.com/#business"}}]</script>
+<link rel="preload" as="image" href="/assets/img/img-02-d78c59c65e5e.jpg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -64,15 +65,15 @@ nav.scrolled{background:rgba(14,14,14,.95);backdrop-filter:blur(20px);padding:.9
 .nav-logo img{height:48px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));transition:height .4s}
 nav.scrolled .nav-logo img{height:38px}
 .nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{font-size:.58rem;letter-spacing:.18em;color:rgba(255,255,255,.8);text-decoration:none;font-weight:500;text-transform:uppercase;transition:color .3s}
+.nav-links a{font-size:.58rem;letter-spacing:.18em;color:rgba(255,255,255,.8);text-decoration:none;font-weight:500;text-transform:uppercase;transition:color .3s;text-shadow:0 1px 4px rgba(0,0,0,.7)}
 .nav-links a:hover{color:var(--gold)}
 .nav-right{display:flex;align-items:center;gap:.8rem}
 .lang-sel{display:flex;gap:.3rem}
-.lb{text-decoration:none;display:inline-block;font-size:.5rem;padding:.26rem .52rem;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;font-family:var(--sans);letter-spacing:.1em;transition:all .3s;font-weight:500}
+.lb{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;font-size:.5rem;padding:.26rem .52rem;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;font-family:var(--sans);letter-spacing:.1em;transition:all .3s;font-weight:500}
 .lb.active,.lb:hover{border-color:var(--gold);color:var(--gold)}
 .nav-cta{font-size:.56rem;letter-spacing:.16em;padding:.52rem 1.3rem;border:1px solid var(--gold);color:var(--gold);background:transparent;text-decoration:none;text-transform:uppercase;font-weight:500;transition:all .35s;font-family:var(--sans);white-space:nowrap}
 .nav-cta:hover{background:var(--gold);color:var(--black)}
-.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
 .nav-burger span{width:22px;height:1px;background:var(--white);display:block}
 .mob-ov{display:none;position:fixed;inset:0;background:rgba(14,14,14,.98);flex-direction:column;align-items:center;justify-content:center;gap:2rem;z-index:998;list-style:none}
 .mob-ov.open{display:flex}
@@ -80,7 +81,7 @@ nav.scrolled .nav-logo img{height:38px}
 .mob-ov a:hover{color:var(--gold)}
 .mob-close{position:absolute;top:1.5rem;right:5%;font-size:1.8rem;color:var(--white);cursor:pointer;background:none;border:none;font-family:var(--serif)}
 .mob-langs{display:flex;gap:.6rem;margin-top:.5rem}
-.mob-langs .lb{font-size:.68rem;padding:.38rem .75rem}
+.mob-langs .lb{font-size:.68rem;padding:.38rem .75rem;min-height:44px;min-width:36px}
 
 .seo-h1{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
@@ -314,7 +315,7 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
   .gal-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(6,140px);gap:3px}
   .prod-grid{grid-template-columns:1fr}
   .hero-btns{flex-direction:column;align-items:center}
-  .hero-stats{display:none}
+  .hero-stats{flex-wrap:wrap}.stat{flex:0 0 50%;padding:.6rem 0}.stat-num{font-size:1.1rem}.stat-label{font-size:.37rem;letter-spacing:.15em}.hero-scroll{display:none}
   .exp-grid{grid-template-columns:1fr}
   .m-body{padding:1.5rem 1.5rem 2rem}
   .fl-slide{flex:0 0 160px}
@@ -375,7 +376,7 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 </nav>
 
 <section id="hero">
-  <div class="hero-bg" id="heroBg"><img src="/assets/img/img-02-d78c59c65e5e.jpg" alt="Gelato Artigianale La Gelateria de Roses"/></div>
+  <div class="hero-bg" id="heroBg"><img src="/assets/img/img-02-d78c59c65e5e.jpg" alt="Gelato Artigianale La Gelateria de Roses" fetchpriority="high"/></div>
   <div class="hero-ov"></div>
   <div class="hero-content">
     <p class="hero-eyebrow shimmer">Costa Brava · Roses · Catalunya</p>
@@ -405,7 +406,7 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
   .glr-reviews-strip .glr-score{font-size:1.15rem;font-weight:700;margin-bottom:.2rem;}
   .glr-reviews-strip .glr-sub{font-size:.95rem;opacity:.9;margin-bottom:1.2rem;}
   .glr-reviews-strip .glr-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;}
-  .glr-reviews-strip a.glr-btn{display:inline-block;padding:.85rem 1.8rem;border-radius:50px;font-weight:700;font-size:.95rem;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease;}
+  .glr-reviews-strip a.glr-btn{display:inline-block;padding:.85rem 1.8rem;border-radius:2px;font-weight:700;font-size:.95rem;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease;}
   .glr-reviews-strip a.glr-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.25);}
   .glr-reviews-strip a.glr-btn-primary{background:#fff;color:#006B68;}
   .glr-reviews-strip a.glr-btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7);}
@@ -415,7 +416,7 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
   .glr-why h2{font-size:clamp(1.7rem,4vw,2.4rem);color:#1a1a1a;margin-bottom:2.5rem;}
   .glr-why h2 em{color:#008E8A;font-style:italic;}
   .glr-why .glr-why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;text-align:left;}
-  .glr-why .glr-why-item{display:flex;align-items:flex-start;gap:.8rem;background:#fff;border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 2px 10px rgba(0,0,0,.05);font-size:.98rem;color:#333;line-height:1.45;}
+  .glr-why .glr-why-item{display:flex;align-items:flex-start;gap:.8rem;background:#fff;border-radius:0;padding:1.1rem 1.3rem;box-shadow:0 2px 10px rgba(0,0,0,.05);font-size:.98rem;color:#333;line-height:1.45;}
   .glr-why .glr-why-item .glr-check{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:#008E8A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;margin-top:.1rem;}
   .glr-why .glr-why-item strong{color:#1a1a1a;}
 </style>
@@ -1008,8 +1009,12 @@ function setLang(l){
   document.documentElement.lang=l;
 }
 
+// El loader no espera a window.load (~50 imágenes) y termina en display:none,
+// porque en pestañas ocultas la transición CSS no avanza y el overlay bloquearía la página.
+function hideLoader(){const ld=document.getElementById('loader');if(ld){ld.classList.add('hide');setTimeout(()=>ld.style.display='none',1000)}}
+setTimeout(hideLoader,1900);
+
 window.addEventListener('load',()=>{
-  setTimeout(()=>document.getElementById('loader').classList.add('hide'),1900);
   const siteLang=document.documentElement.getAttribute('data-site-lang')||'es';
   setLang(i18n[siteLang]?siteLang:'es');
   initCarousel();
@@ -1035,11 +1040,13 @@ function filterFlavors(v){const q=v.toLowerCase();document.querySelectorAll('#fG
 
 // CAROUSEL
 let flPos=0;
-const flSlideW=220+12; // width + gap
+let flSlideW=232;
 const flTotal=35;
 let flAuto;
 
 function initCarousel(){
+  const s=document.querySelector('.fl-slide');
+  if(s) flSlideW=s.offsetWidth+12;
   const dots=document.getElementById('flDots');
   const pages=Math.ceil(flTotal/4);
   for(let i=0;i<pages;i++){
@@ -1097,6 +1104,7 @@ document.getElementById('flTrack').addEventListener('touchend',e=>{
   const diff=touchStartX-e.changedTouches[0].clientX;
   if(Math.abs(diff)>50)diff>0?flNext():flPrev();
 });
+window.addEventListener('resize',()=>{const s=document.querySelector('.fl-slide');if(s)flSlideW=s.offsetWidth+12;});
 </script>
 </body>
 </html>
