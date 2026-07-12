@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es" data-site-lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- Permite pinch-zoom de accesibilidad; el zoom por doble toque se anula por elemento
+     con touch-action:manipulation (no globalmente). viewport-fit=cover para notch iPad. -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#008E8A">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Stock Gelateria">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Control de Stock · La Gelateria de Roses</title>
+<style>
+  :root{
+    --teal:#008E8A; --teal-dark:#00706d; --gold:#C9A84C;
+    --white:#FAFAF8; --black:#0e0e0e; --gray:#6b6b6b; --grl:#f0efec;
+    --card:#ffffff; --line:#e4e2dc; --ok:#2f9e44; --warn:#e8a33d; --err:#d64545;
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --sans:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    --radius:18px; --shadow:0 2px 10px rgba(0,0,0,.06);
+    --gap:18px; --tap:64px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  body{
+    font-family:var(--sans); background:var(--grl); color:var(--black);
+    min-height:100dvh; padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overscroll-behavior-y:contain;
+  }
+
+  /* ---- Cabecera + filtros ---- */
+  header{
+    position:sticky; top:0; z-index:20; background:var(--teal); color:#fff;
+    padding:14px 18px calc(14px + env(safe-area-inset-top)); box-shadow:var(--shadow);
+  }
+  .head-row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .brand{ font-family:var(--serif); font-weight:600; font-size:clamp(20px,3vw,30px); letter-spacing:.3px; }
+  .brand small{ display:block; font-family:var(--sans); font-weight:400; font-size:12px; opacity:.85; letter-spacing:2px; text-transform:uppercase; }
+  .status{ margin-left:auto; display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500;
+    background:rgba(255,255,255,.14); padding:7px 12px; border-radius:999px; min-height:34px; }
+  .status .dot{ width:9px; height:9px; border-radius:50%; background:var(--ok); box-shadow:0 0 0 0 rgba(0,0,0,0); transition:background .2s; }
+  .status[data-state="pending"] .dot{ background:var(--warn); }
+  .status[data-state="error"]   .dot{ background:var(--err); }
+  .status button{ display:none; }
+  .status[data-state="error"] button{ display:inline-block; background:#fff; color:var(--err);
+    border:0; border-radius:999px; padding:4px 10px; font:inherit; font-size:12px; font-weight:600; cursor:pointer; }
+
+  .search{ margin-top:12px; position:relative; }
+  .search input{
+    width:100%; border:0; border-radius:999px; padding:12px 16px 12px 42px; font:inherit; font-size:16px;
+    background:rgba(255,255,255,.95); color:var(--black); min-height:46px;
+  }
+  .search::before{ content:"🔎"; position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:15px; opacity:.6; }
+
+  .filters{ display:flex; gap:10px; margin-top:12px; overflow-x:auto; padding-bottom:2px;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .filters::-webkit-scrollbar{ display:none; }
+  .filters button{
+    flex:0 0 auto; border:0; border-radius:999px; padding:10px 18px; font:inherit; font-weight:600; font-size:15px;
+    background:rgba(255,255,255,.16); color:#fff; cursor:pointer; min-height:44px;
+    -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; -webkit-user-select:none;
+    transition:background .15s;
+  }
+  .filters button.active{ background:#fff; color:var(--teal); }
+
+  /* ---- Rejilla de tarjetas ---- */
+  main{ padding:var(--gap); }
+  .grid{
+    display:grid; gap:var(--gap);
+    grid-template-columns:1fr;                 /* móvil: 1 columna */
+  }
+  @media (min-width:600px){  .grid{ grid-template-columns:repeat(2,1fr); } }  /* iPad vertical / tablet */
+  @media (min-width:1024px){ .grid{ grid-template-columns:repeat(3,1fr); --gap:22px; } } /* iPad apaisado: 3 columnas */
+  @media (min-width:1440px){ .grid{ grid-template-columns:repeat(4,1fr); } }  /* escritorio grande */
+
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:16px;
+    -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; touch-action:manipulation;
+  }
+  .card.hidden{ display:none; }
+  .card.flash{ animation:flash .18s ease; }
+  @keyframes flash{ from{ background:#fffdf5; } to{ background:var(--card); } }
+
+  .card-top{ display:flex; align-items:center; gap:12px; min-height:36px; }
+  .emoji{ font-size:26px; line-height:1; }
+  .name{ font-family:var(--serif); font-weight:600; font-size:23px; line-height:1.1; flex:1; overflow-wrap:anywhere; }
+  .cat-tag{ font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--teal);
+    background:rgba(0,142,138,.1); padding:4px 8px; border-radius:6px; white-space:nowrap; }
+  .item-pending{ width:8px; height:8px; border-radius:50%; background:transparent; flex:0 0 auto; transition:background .2s; }
+  .card[data-pending="1"] .item-pending{ background:var(--warn); }
+  .card[data-error="1"]   .item-pending{ background:var(--err); }
+
+  .counter{ display:flex; align-items:center; justify-content:space-between; gap:14px; }
+  .qty{ font-variant-numeric:tabular-nums; font-weight:700; font-size:clamp(40px,6vw,54px); line-height:1;
+    min-width:2.2ch; text-align:center; color:var(--black); }
+  .qty[data-zero="1"]{ color:var(--gray); }
+
+  button.step{
+    flex:0 0 auto; width:var(--tap); height:var(--tap); border-radius:16px; border:2px solid transparent;
+    font-size:32px; font-weight:700; line-height:1; cursor:pointer; color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+    user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+    transition:transform .09s ease, background .15s, opacity .15s;
+    will-change:transform;
+  }
+  button.step.minus{ background:var(--gray); }
+  button.step.plus{ background:var(--teal); }
+  button.step.plus:hover{ background:var(--teal-dark); }
+  button.step.pressed{ transform:scale(.9); }          /* feedback 60-120ms */
+  button.step:disabled{ opacity:.3; cursor:not-allowed; }
+  button.step:focus-visible{ outline:3px solid var(--gold); outline-offset:3px; }
+
+  footer{ text-align:center; color:var(--gray); font-size:12px; padding:24px 18px 40px; line-height:1.6; }
+  footer a{ color:var(--teal); }
+
+  @media (prefers-reduced-motion:reduce){
+    .card.flash{ animation:none; }
+    button.step{ transition:background .15s; }
+    button.step.pressed{ transform:none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-row">
+    <div class="brand">Control de Stock<small>La Gelateria de Roses</small></div>
+    <div class="status" id="status" data-state="ok" role="status" aria-live="polite">
+      <span class="dot" aria-hidden="true"></span>
+      <span id="statusText">Guardado</span>
+      <button id="retryBtn" type="button">Reintentar</button>
+    </div>
+  </div>
+  <div class="search"><input id="search" type="search" inputmode="search" placeholder="Buscar sabor…" aria-label="Buscar sabor" autocomplete="off"></div>
+  <nav class="filters" id="filters" aria-label="Categorías"></nav>
+</header>
+
+<main>
+  <div class="grid" id="grid" role="list"></div>
+</main>
+
+<footer>
+  Control de Stock interno · Los cambios se guardan automáticamente en este dispositivo.<br>
+  <span id="buildInfo"></span>
+</footer>
+
+<script src="catalog.js"></script>
+<script src="stock-engine.js"></script>
+<script>
+(function(){
+  'use strict';
+  var STORAGE_KEY = 'glr-stock-v1';
+  var BUILD = 'stock v1.0.0';
+
+  /* ---------- Capa de persistencia (localStorage = backend del sitio estático) ----------
+     El motor es async y agnóstico: aquí persist() escribe en localStorage y resuelve.
+     Si en el futuro hay API, se sustituye esta función por un fetch incremental. */
+  function loadSaved(){
+    try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function persist(id, value){
+    return new Promise(function(resolve, reject){
+      try{
+        var data = loadSaved();
+        data[id] = value;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        resolve({ value: value });
+      }catch(e){ reject(e); }
+    });
+  }
+
+  /* ---------- Estado inicial: catálogo + valores guardados ---------- */
+  var saved = loadSaved();
+  var seed = {};
+  StockCatalog.ITEMS.forEach(function(it){
+    seed[it.id] = (typeof saved[it.id] === 'number') ? saved[it.id] : 0;
+  });
+
+  var cards = Object.create(null); // id -> { el, qty, minus, pending }
+
+  /* ---------- Indicador de estado global (discreto) — definido antes del seed ---------- */
+  var statusEl = document.getElementById('status');
+  var statusText = document.getElementById('statusText');
+  function paintStatus(s){
+    if(!statusEl) return;
+    if(s.errors > 0){ statusEl.dataset.state='error'; statusText.textContent = s.errors+' sin guardar'; }
+    else if(s.pending > 0){ statusEl.dataset.state='pending'; statusText.textContent = 'Guardando…'; }
+    else { statusEl.dataset.state='ok'; statusText.textContent = 'Guardado'; }
+  }
+
+  var store = StockEngine.createStore({
+    persist: persist,
+    allowNegative: false,
+    onChange: function(id, v){ paintItem(id, v); },
+    onStatus: function(s){ paintStatus(s); }
+  });
+  store.seed(seed);
+
+  /* ---------- Render inicial (una sola vez; luego updates aislados por tarjeta) ---------- */
+  var grid = document.getElementById('grid');
+  var catName = {};
+  StockCatalog.CATEGORIES.forEach(function(c){ catName[c.id] = c.name; });
+
+  StockCatalog.ITEMS.forEach(function(it){
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('role','listitem');
+    card.dataset.id = it.id;
+    card.dataset.cat = it.cat;
+    card.dataset.name = it.name.toLowerCase();
+
+    card.innerHTML =
+      '<div class="card-top">'
+      + '<span class="emoji" aria-hidden="true">'+it.emoji+'</span>'
+      + '<span class="name">'+it.name+'</span>'
+      + '<span class="cat-tag">'+(catName[it.cat]||'')+'</span>'
+      + '<span class="item-pending" aria-hidden="true"></span>'
+      + '</div>'
+      + '<div class="counter">'
+      + '<button class="step minus" type="button" aria-label="Restar una unidad de '+it.name+'">−</button>'
+      + '<span class="qty" aria-live="off" aria-label="Stock de '+it.name+'">0</span>'
+      + '<button class="step plus" type="button" aria-label="Sumar una unidad de '+it.name+'">+</button>'
+      + '</div>';
+
+    grid.appendChild(card);
+
+    var minus = card.querySelector('.minus');
+    var plus  = card.querySelector('.plus');
+    var qty   = card.querySelector('.qty');
+
+    cards[it.id] = { el:card, qty:qty, minus:minus, plus:plus };
+
+    bindStep(minus, it.id, -1);
+    bindStep(plus,  it.id, +1);
+
+    paintItem(it.id, store.view(it.id));
+  });
+
+  /* ---------- Manejo táctil: acción en 'click' (una vez por toque físico, + teclado);
+       feedback de pulsado con pointer events. Nunca se cuentan dobles eventos. ---------- */
+  function bindStep(btn, id, delta){
+    // Feedback visual instantáneo (60-120ms) — no cuenta la operación.
+    btn.addEventListener('pointerdown', function(){
+      btn.classList.add('pressed');
+    });
+    var release = function(){ btn.classList.remove('pressed'); };
+    btn.addEventListener('pointerup', release);
+    btn.addEventListener('pointercancel', release);
+    btn.addEventListener('pointerleave', release);
+
+    // Acción real: exactamente una por activación (toque o Enter/Espacio).
+    btn.addEventListener('click', function(){
+      store.apply(id, delta);   // optimista + encola guardado; instantáneo
+    });
+  }
+
+  /* ---------- Pintado aislado de una tarjeta (sin re-render global) ---------- */
+  function paintItem(id, v){
+    var c = cards[id];
+    if(!c || !v) return;
+    if(c.qty.textContent !== String(v.value)){
+      c.qty.textContent = v.value;
+      c.el.classList.remove('flash'); void c.el.offsetWidth; c.el.classList.add('flash');
+    }
+    c.qty.dataset.zero = v.value === 0 ? '1' : '0';
+    c.minus.disabled = v.value <= 0;
+    c.el.dataset.pending = v.pending ? '1' : '0';
+    c.el.dataset.error = v.error ? '1' : '0';
+  }
+
+  document.getElementById('retryBtn').addEventListener('click', function(){ store.retrySync(); });
+
+  /* ---------- Filtros por categoría ---------- */
+  var filtersEl = document.getElementById('filters');
+  var activeCat = 'all';
+  StockCatalog.CATEGORIES.forEach(function(c){
+    var b = document.createElement('button');
+    b.type='button'; b.textContent = c.name; b.dataset.cat = c.id;
+    if(c.id==='all') b.classList.add('active');
+    b.addEventListener('click', function(){
+      activeCat = c.id;
+      filtersEl.querySelectorAll('button').forEach(function(x){ x.classList.toggle('active', x===b); });
+      applyFilter();
+    });
+    filtersEl.appendChild(b);
+  });
+
+  var searchEl = document.getElementById('search');
+  searchEl.addEventListener('input', applyFilter);
+
+  function applyFilter(){
+    var q = searchEl.value.trim().toLowerCase();
+    StockCatalog.ITEMS.forEach(function(it){
+      var c = cards[it.id];
+      var okCat = activeCat==='all' || it.cat===activeCat;
+      var okQ = !q || it.name.toLowerCase().indexOf(q) !== -1;
+      c.el.classList.toggle('hidden', !(okCat && okQ));
+    });
+  }
+
+  document.getElementById('buildInfo').textContent = BUILD;
+
+  /* ---------- PWA / Service Worker ---------- */
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>
