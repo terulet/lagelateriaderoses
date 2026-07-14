@@ -49,7 +49,7 @@ body{font-family:var(--sans);background:var(--white);color:var(--black);overflow
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 @keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
-@keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 30px rgba(37,211,102,.7),0 0 0 8px rgba(37,211,102,.1)}}
+@keyframes waPulse{0%{transform:scale(.85);opacity:.55}70%,100%{transform:scale(1.45);opacity:0}}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.4rem 5%;display:flex;align-items:center;justify-content:space-between;transition:all .5s}
@@ -110,10 +110,12 @@ section{padding:clamp(5rem,9vw,8rem) 5%}
 .reveal-ready .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease,transform .9s ease}
 .reveal-ready .reveal.visible{opacity:1;transform:none}
 .shimmer{background:linear-gradient(90deg,var(--gold) 0%,var(--gl) 50%,var(--gold) 100%);background-size:200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite}
+.reveal .shimmer{animation:none}
+.reveal.visible .shimmer{animation:shimmer 4s linear infinite}
 
 
 :where(a,button,[role="button"],input):focus-visible{outline:3px solid var(--gold);outline-offset:4px}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal-ready .reveal,.reveal,.hero-eyebrow,.hero-logo,.seo-h1,.hero-tag,.hero-btns,.hero-scroll,.shimmer,.wa-float{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}.fl-track{transition:none!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal-ready .reveal,.reveal,.hero-eyebrow,.hero-logo,.seo-h1,.hero-tag,.hero-btns,.hero-scroll,.shimmer,.wa-float,.wa-float::before{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}.fl-track{transition:none!important}}
 
 /* SEO LOCAL */
 .seo-local{background:var(--white);padding:clamp(3.5rem,6vw,5rem) 5%;border-bottom:1px solid var(--grl)}
@@ -250,7 +252,8 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 .foot-btm span{font-size:.6rem;color:rgba(201,168,76,.92);letter-spacing:.2em;font-style:italic;font-family:var(--serif)}
 
 /* WHATSAPP */
-.wa-float{position:fixed;bottom:2rem;right:2rem;z-index:900;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .3s;animation:waPulse 2.5s ease-in-out infinite}
+.wa-float{position:fixed;bottom:2rem;right:2rem;z-index:900;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .3s;box-shadow:0 4px 20px rgba(37,211,102,.4)}
+.wa-float::before{content:'';position:absolute;inset:0;border:2px solid rgba(37,211,102,.55);border-radius:50%;pointer-events:none;animation:waPulse 2.5s ease-out infinite}
 .wa-float:hover{transform:scale(1.1)}
 .wa-float svg{width:27px;height:27px;fill:white}
 
@@ -438,15 +441,15 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
       <div class="exp-body"><span class="exp-num">01</span><div class="exp-icon">🍨</div><h3 data-i18n="e1t">Tägliche Herstellung</h3><p data-i18n="e1d">Jeden Morgen bereiten wir unser Gelato nach traditionellen italienischen Rezepten zu. Ohne Konservierungsstoffe, ohne Kompromisse.</p></div>
     </div>
     <div class="exp-card reveal" style="transition-delay:.12s">
-      <div class="exp-img"><img src="/assets/img/img-04-69e647106443.webp" width="600" height="443" decoding="async" alt="Ausgewählte Zutaten" loading="lazy"/></div>
+      <div class="exp-img"><img src="/assets/img/img-04-58adc1f3c735.webp" width="600" height="443" decoding="async" alt="Ausgewählte Zutaten" loading="lazy"/></div>
       <div class="exp-body"><span class="exp-num">02</span><div class="exp-icon">🌿</div><h3 data-i18n="e2t">Ausgewählte Zutaten</h3><p data-i18n="e2d">Pistazien aus Sizilien, Haselnüsse aus dem Piemont und saisonale Früchte. Jede Zutat wird sorgfältig ausgewählt.</p></div>
     </div>
     <div class="exp-card reveal" style="transition-delay:.18s">
-      <div class="exp-img"><img src="/assets/img/img-05-fc3d68b0f8c3.webp" width="600" height="441" decoding="async" alt="Italienische Inspiration" loading="lazy"/></div>
+      <div class="exp-img"><img src="/assets/img/img-05-c805714a04ed.webp" width="600" height="441" decoding="async" alt="Italienische Inspiration" loading="lazy"/></div>
       <div class="exp-body"><span class="exp-num">03</span><div class="exp-icon">🇮🇹</div><h3 data-i18n="e3t">Italienische Inspiration</h3><p data-i18n="e3d">Authentische Rezepte der besten Gelaterias aus Mailand und Florenz, an die Mittelmeerküste gebracht.</p></div>
     </div>
     <div class="exp-card reveal" style="transition-delay:.24s">
-      <div class="exp-img"><img src="/assets/img/img-06-c53077be9dfe.webp" width="600" height="450" decoding="async" alt="Erlebnis bei La Gelateria de Roses" loading="lazy"/></div>
+      <div class="exp-img"><img src="/assets/img/img-06-a5b0e316f1aa.webp" width="600" height="450" decoding="async" alt="Erlebnis bei La Gelateria de Roses" loading="lazy"/></div>
       <div class="exp-body"><span class="exp-num">04</span><div class="exp-icon">☀️</div><h3 data-i18n="e4t">Einzigartiges Erlebnis</h3><p data-i18n="e4d">Der perfekte Ort nach dem Strand. Kommen Sie vorbei, entspannen Sie sich und genießen Sie etwas Besonderes in Roses.</p></div>
     </div>
   </div>
@@ -461,245 +464,245 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
     <div class="fl-track" id="flTrack">
       
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-07-4df97b8d8514.webp" width="450" height="450" decoding="async" alt="Pistazie" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-07-4df97b8d8514.webp" srcset="/assets/img/img-07-6a633825ef96.webp 320w, /assets/img/img-07-4df97b8d8514.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Pistazie" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Pistazie</h3>
         <p>🌿 Intensiv · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-08-80ada76a2f2e.webp" width="450" height="450" decoding="async" alt="Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-08-80ada76a2f2e.webp" srcset="/assets/img/img-08-7a8fb42fb66f.webp 320w, /assets/img/img-08-80ada76a2f2e.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Schokolade</h3>
         <p>🍫 Intensiv · Gourmet</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-09-5e0531268210.webp" width="450" height="450" decoding="async" alt="Erdbeere" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-09-5e0531268210.webp" srcset="/assets/img/img-09-35a890c9df9e.webp 320w, /assets/img/img-09-5e0531268210.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Erdbeere" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Erdbeere</h3>
         <p>🍓 Frisch · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-10-8114a55f90bf.webp" width="450" height="450" decoding="async" alt="Vanille" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-10-8114a55f90bf.webp" srcset="/assets/img/img-10-f35fc97797b0.webp 320w, /assets/img/img-10-8114a55f90bf.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Vanille" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Vanille</h3>
         <p>🍦 Cremig · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-11-cedfd4bdcaef.webp" width="450" height="450" decoding="async" alt="Mango" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-11-cedfd4bdcaef.webp" srcset="/assets/img/img-11-4f779856ac9e.webp 320w, /assets/img/img-11-cedfd4bdcaef.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Mango" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Mango</h3>
         <p>🥭 Cremig · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-12-e0e6cc750a4a.webp" width="450" height="450" decoding="async" alt="Stracciatella" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-12-e0e6cc750a4a.webp" srcset="/assets/img/img-12-c1b498a12f61.webp 320w, /assets/img/img-12-e0e6cc750a4a.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Stracciatella" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Stracciatella</h3>
         <p>⚡ Klassisch · Unwiderstehlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-13-755363c1dc94.webp" width="450" height="450" decoding="async" alt="Zitrone" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-13-755363c1dc94.webp" srcset="/assets/img/img-13-e9e5aa5691c4.webp 320w, /assets/img/img-13-755363c1dc94.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Zitrone" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Zitrone</h3>
         <p>🍋 Erfrischend · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-14-a3f271f6fa9e.webp" width="450" height="450" decoding="async" alt="Himbeere" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-14-a3f271f6fa9e.webp" srcset="/assets/img/img-14-a4c74b99447b.webp 320w, /assets/img/img-14-a3f271f6fa9e.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Himbeere" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Himbeere</h3>
         <p>🫐 Intensiv · Fruchtig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-15-6ea1ea84bc3c.webp" width="450" height="450" decoding="async" alt="Dulce de Leche" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-15-6ea1ea84bc3c.webp" srcset="/assets/img/img-15-a96231fffed1.webp 320w, /assets/img/img-15-6ea1ea84bc3c.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Dulce de Leche" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Dulce de Leche</h3>
         <p>🍮 Cremig · Unwiderstehlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-16-c258a6b3da69.webp" width="450" height="450" decoding="async" alt="Haselnuss" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-16-c258a6b3da69.webp" srcset="/assets/img/img-16-0a938416fb08.webp 320w, /assets/img/img-16-c258a6b3da69.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Haselnuss" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Haselnuss</h3>
         <p>🌰 Cremig · Handwerklich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-17-13b7a128a6c0.webp" width="450" height="450" decoding="async" alt="Crema Catalana" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-17-13b7a128a6c0.webp" srcset="/assets/img/img-17-3f2db5cd0cfd.webp 320w, /assets/img/img-17-13b7a128a6c0.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Crema Catalana" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Crema Catalana</h3>
         <p>🔥 Traditionell · Einzigartig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-18-2c9dc2242e6c.webp" width="450" height="450" decoding="async" alt="Salzkaramell" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-18-2c9dc2242e6c.webp" srcset="/assets/img/img-18-fca19e22ed92.webp 320w, /assets/img/img-18-2c9dc2242e6c.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Salzkaramell" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Salzkaramell</h3>
         <p>🧂 Süß · Salzig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-19-de7f0770eb13.webp" width="450" height="450" decoding="async" alt="Cheesecake" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-19-de7f0770eb13.webp" srcset="/assets/img/img-19-5c224522cb57.webp 320w, /assets/img/img-19-de7f0770eb13.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Cheesecake" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Cheesecake</h3>
         <p>🧁 Cremig · Unwiderstehlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-20-5e42d0090b7f.webp" width="450" height="450" decoding="async" alt="Turrón" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-20-5e42d0090b7f.webp" srcset="/assets/img/img-20-813414999962.webp 320w, /assets/img/img-20-5e42d0090b7f.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Turrón" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Turrón</h3>
         <p>🍯 Cremig · Traditionell</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-21-d482b9d47eda.webp" width="450" height="450" decoding="async" alt="Kokos" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-21-d482b9d47eda.webp" srcset="/assets/img/img-21-d975cb483605.webp 320w, /assets/img/img-21-d482b9d47eda.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Kokos" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kokos</h3>
         <p>🥥 Zart · Exotisch</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-22-896c3a1dd9c4.webp" width="450" height="450" decoding="async" alt="Kaffee" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-22-896c3a1dd9c4.webp" srcset="/assets/img/img-22-18651b1d8ca7.webp 320w, /assets/img/img-22-896c3a1dd9c4.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Kaffee" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kaffee</h3>
         <p>☕ Intensiv · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-23-cb501b38f30b.webp" width="450" height="450" decoding="async" alt="Wassermelone" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-23-cb501b38f30b.webp" srcset="/assets/img/img-23-7a70a2418a4f.webp 320w, /assets/img/img-23-cb501b38f30b.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Wassermelone" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Wassermelone</h3>
         <p>🍉 Erfrischend · Fruchtig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-24-e9ba39705fe0.webp" width="450" height="450" decoding="async" alt="Maracuja" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-24-e9ba39705fe0.webp" srcset="/assets/img/img-24-28f2a5483a7e.webp 320w, /assets/img/img-24-e9ba39705fe0.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Maracuja" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Maracuja</h3>
         <p>🍊 Tropisch · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-25-9330de2f4648.webp" width="450" height="450" decoding="async" alt="Leche Merengada" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-25-9330de2f4648.webp" srcset="/assets/img/img-25-5f038d2993de.webp 320w, /assets/img/img-25-9330de2f4648.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Leche Merengada" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Leche Merengada</h3>
         <p>🥛 Traditionell · Zart</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-26-d5cae863c6ba.webp" width="450" height="450" decoding="async" alt="Sahne" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-26-d5cae863c6ba.webp" srcset="/assets/img/img-26-d1c1da75be6c.webp 320w, /assets/img/img-26-d5cae863c6ba.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Sahne" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Sahne</h3>
         <p>🍦 Zart · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-27-cae41a250458.webp" width="450" height="450" decoding="async" alt="Minze-Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-27-cae41a250458.webp" srcset="/assets/img/img-27-69adf9236836.webp 320w, /assets/img/img-27-cae41a250458.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Minze-Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Minze-Schokolade</h3>
         <p>🌿 Frisch · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-28-27680ba7920b.webp" width="450" height="450" decoding="async" alt="Lakritz" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-28-27680ba7920b.webp" srcset="/assets/img/img-28-9e216b9ea22e.webp 320w, /assets/img/img-28-27680ba7920b.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Lakritz" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Lakritz</h3>
         <p>🖤 Intensiv · Einzigartig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-29-8861a6eb8ae0.webp" width="450" height="450" decoding="async" alt="Brownie" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-29-8861a6eb8ae0.webp" srcset="/assets/img/img-29-4b9d6dec9083.webp 320w, /assets/img/img-29-8861a6eb8ae0.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Brownie" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Brownie</h3>
         <p>🍫 Intensiv · Gourmet</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-30-cfe630f5dbb5.webp" width="450" height="450" decoding="async" alt="Weiße Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-30-cfe630f5dbb5.webp" srcset="/assets/img/img-30-2e5e1b22232e.webp 320w, /assets/img/img-30-cfe630f5dbb5.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Weiße Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Weiße Schokolade</h3>
         <p>⚪ Süß · Seidig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-31-504d5db093ee.webp" width="450" height="450" decoding="async" alt="Amarena" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-31-504d5db093ee.webp" srcset="/assets/img/img-31-6a755dbc376a.webp 320w, /assets/img/img-31-504d5db093ee.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Amarena" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Amarena</h3>
         <p>🍒 Elegant · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-32-95c3401bd4a4.webp" width="450" height="450" decoding="async" alt="Schlumpf" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-32-95c3401bd4a4.webp" srcset="/assets/img/img-32-300659dc257f.webp 320w, /assets/img/img-32-95c3401bd4a4.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Schlumpf" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Schlumpf</h3>
         <p>💙 Verspielt · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-33-d48788cae47e.webp" width="450" height="450" decoding="async" alt="Lotus" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-33-d48788cae47e.webp" srcset="/assets/img/img-33-e370c103003e.webp 320w, /assets/img/img-33-d48788cae47e.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Lotus" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Lotus</h3>
         <p>🍪 Würzig · Knusprig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-34-1aa8186906ff.webp" width="450" height="450" decoding="async" alt="Snickers" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-34-1aa8186906ff.webp" srcset="/assets/img/img-34-ab1cd7f19552.webp 320w, /assets/img/img-34-1aa8186906ff.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Snickers" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Snickers</h3>
         <p>🥜 Erdnuss · Karamell</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-35-cefb401eb3c3.webp" width="450" height="450" decoding="async" alt="Oreo" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-35-cefb401eb3c3.webp" srcset="/assets/img/img-35-cfda299570e0.webp 320w, /assets/img/img-35-cefb401eb3c3.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Oreo" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Oreo</h3>
         <p>⚫ Cookies · Cream</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-36-f9d4b3d6721f.webp" width="450" height="450" decoding="async" alt="Kinder Ei" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-36-f9d4b3d6721f.webp" srcset="/assets/img/img-36-2ebdca65b18c.webp 320w, /assets/img/img-36-f9d4b3d6721f.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Kinder Ei" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kinder Ei</h3>
         <p>🥚 Zart · Verführerisch</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-37-e9068be674a7.webp" width="450" height="450" decoding="async" alt="Veilchen" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-37-e9068be674a7.webp" srcset="/assets/img/img-37-7188190a3421.webp 320w, /assets/img/img-37-e9068be674a7.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Veilchen" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Veilchen</h3>
         <p>💜 Blumig · Fein</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-38-931d59a6eac5.webp" width="450" height="450" decoding="async" alt="Kinder Bueno" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-38-931d59a6eac5.webp" srcset="/assets/img/img-38-cff6f5f93505.webp 320w, /assets/img/img-38-931d59a6eac5.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Kinder Bueno" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kinder Bueno</h3>
         <p>🍫 Cremig · Knusprig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-39-859a7936e265.webp" width="450" height="450" decoding="async" alt="Melone" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-39-859a7936e265.webp" srcset="/assets/img/img-39-1d2f17ec1fb4.webp 320w, /assets/img/img-39-859a7936e265.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Melone" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Melone</h3>
         <p>🍈 Süß · Sommerlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-40-fccda11a9e5f.webp" width="450" height="450" decoding="async" alt="Joghurt" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-40-fccda11a9e5f.webp" srcset="/assets/img/img-40-f3be02cefb98.webp 320w, /assets/img/img-40-fccda11a9e5f.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Joghurt" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Joghurt</h3>
         <p>🥛 Zart · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-41-2c465592766f.webp" width="450" height="450" decoding="async" alt="Dubai-Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-41-2c465592766f.webp" srcset="/assets/img/img-41-c57bfe7cf864.webp 320w, /assets/img/img-41-2c465592766f.webp 450w" sizes="(max-width:600px) 160px, (max-width:900px) 180px, 220px" width="450" height="450" decoding="async" alt="Dubai-Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Dubai-Schokolade</h3>
         <p>✨ Pistazie · Gourmet</p>
@@ -1034,12 +1037,23 @@ function filterFlavors(v){const q=v.toLowerCase();document.querySelectorAll('#fG
 // CAROUSEL
 let flPos=0;
 let flSlideW=232;
+let flViewportW=0;
+let flResizeObserver;
 const flTotal=35;
 let flAuto;
 
 function initCarousel(){
   const s=document.querySelector('.fl-slide');
-  if(s) flSlideW=s.offsetWidth+12;
+  const wrap=document.querySelector('.fl-track-wrap');
+  if('ResizeObserver' in window){
+    flResizeObserver=new ResizeObserver(entries=>{entries.forEach(entry=>{const box=entry.borderBoxSize;const size=Array.isArray(box)?box[0]:box;if(!size)return;if(entry.target===s)flSlideW=size.inlineSize+12;else if(entry.target===wrap)flViewportW=size.inlineSize})});
+    if(s)flResizeObserver.observe(s);
+    if(wrap)flResizeObserver.observe(wrap);
+  }else{
+    const syncCarouselSize=()=>requestAnimationFrame(()=>{if(s)flSlideW=s.getBoundingClientRect().width+12;if(wrap)flViewportW=wrap.getBoundingClientRect().width});
+    syncCarouselSize();
+    window.addEventListener('resize',syncCarouselSize,{passive:true});
+  }
   const dots=document.getElementById('flDots');
   const pages=Math.ceil(flTotal/4);
   for(let i=0;i<pages;i++){
@@ -1052,6 +1066,7 @@ function initCarousel(){
 }
 function startAuto(){if(!reduceMotion.matches)flAuto=setInterval(flNext,3500)}
 function stopAuto(){clearInterval(flAuto)}
+function getVisibleFlavors(){return Math.max(1,Math.floor(flViewportW/flSlideW)||4)}
 function updateDots(){
   const pages=Math.ceil(flTotal/4);
   const page=Math.floor(flPos/4);
@@ -1060,7 +1075,7 @@ function updateDots(){
 function goToPage(p){
   stopAuto();
   const track=document.getElementById('flTrack');
-  const visible=Math.floor(track.parentElement.offsetWidth/flSlideW);
+  const visible=getVisibleFlavors();
   flPos=p*visible;
   if(flPos>flTotal-visible)flPos=flTotal-visible;
   track.style.transform=`translateX(-${flPos*flSlideW}px)`;
@@ -1070,7 +1085,7 @@ function goToPage(p){
 function flNext(){
   stopAuto();
   const track=document.getElementById('flTrack');
-  const visible=Math.floor(track.parentElement.offsetWidth/flSlideW)||4;
+  const visible=getVisibleFlavors();
   flPos+=1;
   if(flPos>flTotal-visible)flPos=0;
   track.style.transform=`translateX(-${flPos*flSlideW}px)`;
@@ -1080,7 +1095,7 @@ function flNext(){
 function flPrev(){
   stopAuto();
   const track=document.getElementById('flTrack');
-  const visible=Math.floor(track.parentElement.offsetWidth/flSlideW)||4;
+  const visible=getVisibleFlavors();
   flPos-=1;
   if(flPos<0)flPos=flTotal-visible;
   track.style.transform=`translateX(-${flPos*flSlideW}px)`;
@@ -1097,7 +1112,6 @@ document.getElementById('flTrack').addEventListener('touchend',e=>{
   const diff=touchStartX-e.changedTouches[0].clientX;
   if(Math.abs(diff)>50)diff>0?flNext():flPrev();
 });
-window.addEventListener('resize',()=>{const s=document.querySelector('.fl-slide');if(s)flSlideW=s.offsetWidth+12;});
 </script>
 </body>
 </html>
