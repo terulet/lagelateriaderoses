@@ -18,6 +18,7 @@ const routes = new Map([
   ['/fr/meilleures-plages-roses/', 'fr/meilleures-plages-roses/index.html'],
   ['/fr/que-faire-a-roses/', 'fr/que-faire-a-roses/index.html'],
 ]);
+const utilityFiles = ['404.html'];
 
 const homes = ['/', '/ca/', '/en/', '/fr/', '/de/', '/nl/'];
 const guides = [...routes.keys()].filter(route => route.startsWith('/fr/') && route !== '/fr/');
@@ -76,8 +77,9 @@ function jsonLd(html, route) {
 
 const expectedFiles = [...routes.values()].sort();
 const actualFiles = walkHtml(root).sort();
-if (JSON.stringify(actualFiles) !== JSON.stringify(expectedFiles)) {
-  fail(`inventario HTML: esperado ${expectedFiles.join(', ')}, encontrado ${actualFiles.join(', ')}`);
+const expectedAllFiles = [...expectedFiles, ...utilityFiles].sort();
+if (JSON.stringify(actualFiles) !== JSON.stringify(expectedAllFiles)) {
+  fail(`inventario HTML: esperado ${expectedAllFiles.join(', ')}, encontrado ${actualFiles.join(', ')}`);
 }
 
 const documents = new Map();
@@ -108,6 +110,8 @@ for (const [route, relative] of routes) {
   const description = decodeEntities(descriptionMatches[0]?.[1] || '');
   if (title.length > 60) fail(`${route}: title de ${title.length} caracteres`);
   if (description.length > 160) fail(`${route}: description de ${description.length} caracteres`);
+  const faviconCount = [...html.matchAll(/<link\s+rel=["']icon["'][^>]*>/gi)].length;
+  if (faviconCount !== 1) fail(`${route}: favicon count ${faviconCount}`);
   if (titles.has(title)) fail(`${route}: title duplicado ${title}`);
   if (descriptions.has(description)) fail(`${route}: description duplicada`);
   titles.add(title);
@@ -265,9 +269,42 @@ if (!robots.split(/\r?\n/).some(line => line.trim() === `Sitemap: ${sitemapUrl}`
 const socialImage = path.join(root, 'assets/img/img-02-d78c59c65e5e.jpg');
 if (!fs.existsSync(socialImage)) fail('falta la imagen social de las guías');
 
+const notFoundFile = path.join(root, '404.html');
+if (!fs.existsSync(notFoundFile)) {
+  fail('falta 404.html');
+} else {
+  const notFound = fs.readFileSync(notFoundFile, 'utf8');
+  if (count(notFound, '<meta name="robots" content="noindex, follow">') !== 1) fail('404.html: robots debe ser noindex, follow');
+  if ([...notFound.matchAll(/<link\s+rel=["']canonical["']/gi)].length) fail('404.html: no debe publicar canonical');
+  if ([...notFound.matchAll(/<link\s+rel=["']icon["'][^>]*>/gi)].length !== 1) fail('404.html: favicon count incorrecto');
+  for (const home of homes) {
+    if (!new RegExp(`<a\\b[^>]*href=["']${home.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`, 'i').test(notFound)) fail(`404.html: falta enlace a ${home}`);
+  }
+}
+
+const workflowFile = path.join(root, '.github/workflows/seo-validation.yml');
+if (!fs.existsSync(workflowFile)) {
+  fail('falta el workflow SEO');
+} else {
+  const workflow = fs.readFileSync(workflowFile, 'utf8');
+  for (const marker of [
+    'pull_request:',
+    'branches:',
+    '- main',
+    'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0',
+    'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0',
+    'node-version: 24',
+    'persist-credentials: false',
+    'timeout-minutes: 5',
+    'node .github/scripts/validate-internal-architecture.mjs .',
+  ]) {
+    if (!workflow.includes(marker)) fail(`workflow SEO: falta ${marker}`);
+  }
+}
+
 if (errors.length) {
   for (const error of [...new Set(errors)].sort()) console.error(`FAIL: ${error}`);
   process.exit(1);
 }
 
-console.log('PASS: P6 internal architecture validates 10/10 pages from every language home; metadata, social cards, canonical, hreflang, sitemap, JSON-LD, links and fragments are consistent.');
+console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404 and CI from every language home; metadata, social cards, canonical, hreflang, sitemap, JSON-LD, links and fragments are consistent.');
