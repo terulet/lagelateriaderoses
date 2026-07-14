@@ -30,7 +30,8 @@
 <link rel="alternate" hreflang="x-default" href="https://lagelateriaderoses.com/"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍦</text></svg>"/>
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"IceCreamShop","@id":"https://lagelateriaderoses.com/#business","name":"La Gelateria de Roses","alternateName":["La Gelateria","Gelateria de Roses"],"url":"https://lagelateriaderoses.com/","telephone":"+34972253795","email":"info@lagelateriaderoses.com","priceRange":"€","servesCuisine":["Gelato artigianale","Helado artesanal","Ice cream","Crêpes","Gofres","Waffles","Milkshakes","Smoothies","Granizados"],"address":{"@type":"PostalAddress","streetAddress":"Carrer Pi i Sunyer 6","postalCode":"17480","addressLocality":"Roses","addressRegion":"Girona","addressCountry":"ES"},"geo":{"@type":"GeoCoordinates","latitude":42.2668,"longitude":3.176},"hasMap":"https://www.google.com/maps/place/?q=place_id:ChIJ2SAQYFJhuhIRpVJqYaT7svc","sameAs":["https://instagram.com/lagelateriaderoses"],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"11:00","closes":"23:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:30","closes":"00:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:30","closes":"23:30"}],"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"672"},"availableLanguage":["es","ca","en","fr","nl","de"],"description":"Artisan ice cream shop in Roses, Costa Brava. Italian gelato made daily, 50+ flavours, crêpes, waffles, milkshakes, smoothies and slush drinks.","inLanguage":"en"},{"@context":"https://schema.org","@type":"WebPage","name":"Ice Cream Shop in Roses | Artisan Italian Gelato - La Gelateria de Roses","url":"https://lagelateriaderoses.com/en/","description":"Artisan ice cream shop in Roses, Costa Brava. Italian gelato made daily, 50+ flavours, crêpes, waffles, milkshakes, smoothies and slush drinks.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"La Gelateria de Roses","url":"https://lagelateriaderoses.com/"},"about":{"@id":"https://lagelateriaderoses.com/#business"}}]</script>
-<link rel="preload" as="image" href="/assets/img/img-55-7082859e91ee.webp"/>
+<link rel="preload" as="image" href="/assets/img/img-55-027c36da645b.webp" media="(orientation:portrait)" type="image/webp"/>
+<link rel="preload" as="image" href="/assets/img/img-55-7082859e91ee.webp" media="(orientation:landscape)" type="image/webp"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
@@ -80,6 +81,7 @@ nav.scrolled .nav-logo img{height:38px}
 /* HERO */
 #hero{position:relative;height:100svh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .hero-bg{position:absolute;inset:0;will-change:transform}
+.hero-bg picture{display:block;width:100%;height:100%}
 .hero-bg img{width:100%;height:100%;object-fit:cover}
 .hero-ov{position:absolute;inset:0;background:linear-gradient(160deg,rgba(0,0,0,.58) 0%,rgba(0,55,53,.38) 45%,rgba(0,0,0,.62) 100%)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:0 1.5rem;max-width:900px}
@@ -342,7 +344,7 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 </ul>
 
 <nav id="navbar">
-  <a href="/en/" class="nav-logo" aria-label="La Gelateria de Roses"><img src="/assets/img/img-01-ffdf22f38473.webp" width="400" height="343" decoding="async" alt="La Gelateria de Roses"/></a>
+  <a href="/en/" class="nav-logo" aria-label="La Gelateria de Roses"><img src="/assets/img/img-01-ffdf22f38473.webp" srcset="/assets/img/img-01-ddd27e54fe40.webp 196w, /assets/img/img-01-ffdf22f38473.webp 400w, /assets/img/img-01-e73e1134b570.webp 600w, /assets/img/img-01-cc3e89aa2668.webp 800w" sizes="(max-width:452px) 190px, (max-width:881px) 42vw, 370px" width="400" height="343" decoding="async" alt="La Gelateria de Roses"/></a>
   <ul class="nav-links">
     <li><a href="#experience" data-i18n="nav_about">About</a></li>
     <li><a href="#flavors" data-i18n="nav_flavors">Flavours</a></li>
@@ -366,11 +368,11 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 </nav>
 
 <section id="hero">
-  <div class="hero-bg" id="heroBg"><img src="/assets/img/img-55-7082859e91ee.webp" width="1600" height="901" alt="Gelato Artigianale La Gelateria de Roses" fetchpriority="high"/></div>
+  <div class="hero-bg" id="heroBg"><picture><source media="(orientation:portrait)" srcset="/assets/img/img-55-027c36da645b.webp" width="960" height="901" type="image/webp"/><img src="/assets/img/img-55-7082859e91ee.webp" width="1600" height="901" alt="Gelato Artigianale La Gelateria de Roses" fetchpriority="high"/></picture></div>
   <div class="hero-ov"></div>
   <div class="hero-content">
     <p class="hero-eyebrow shimmer">Costa Brava · Roses · Catalunya</p>
-    <img class="hero-logo" src="/assets/img/img-01-ffdf22f38473.webp" srcset="/assets/img/img-01-ffdf22f38473.webp 400w, /assets/img/img-01-cc3e89aa2668.webp 800w" sizes="(max-width:600px) 190px, 370px" width="400" height="343" decoding="async" alt="La Gelateria de Roses"/>
+    <img class="hero-logo" src="/assets/img/img-01-ffdf22f38473.webp" srcset="/assets/img/img-01-ddd27e54fe40.webp 196w, /assets/img/img-01-ffdf22f38473.webp 400w, /assets/img/img-01-e73e1134b570.webp 600w, /assets/img/img-01-cc3e89aa2668.webp 800w" sizes="(max-width:452px) 190px, (max-width:881px) 42vw, 370px" width="400" height="343" decoding="async" alt="La Gelateria de Roses"/>
         <h1 class="seo-h1">La Gelateria de Roses | Artisan ice cream shop and Italian gelato in Roses, Costa Brava</h1>
     <div class="hero-div"></div>
     <p class="hero-tag" data-i18n="hero_tag">Artisan Italian gelato in the heart of Roses</p>
@@ -848,7 +850,7 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 <footer>
   <div class="foot-grid">
     <div>
-      <div class="foot-logo"><img src="/assets/img/img-01-ffdf22f38473.webp" width="400" height="343" loading="lazy" decoding="async" alt="La Gelateria de Roses"/></div>
+      <div class="foot-logo"><img src="/assets/img/img-01-ffdf22f38473.webp" srcset="/assets/img/img-01-ddd27e54fe40.webp 196w, /assets/img/img-01-ffdf22f38473.webp 400w, /assets/img/img-01-e73e1134b570.webp 600w, /assets/img/img-01-cc3e89aa2668.webp 800w" sizes="(max-width:452px) 190px, (max-width:881px) 42vw, 370px" width="400" height="343" loading="lazy" decoding="async" alt="La Gelateria de Roses"/></div>
       <p class="foot-desc" data-i18n="f_desc">We make our gelato every day with selected ingredients and the authenticity of the finest Italian gelaterias.</p>
       <div class="foot-socials">
         <a href="https://instagram.com/lagelateriaderoses" target="_blank" class="soc" rel="noopener noreferrer">📷</a>
