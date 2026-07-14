@@ -49,15 +49,6 @@ body{font-family:var(--sans);background:var(--white);color:var(--black);overflow
 @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
 @keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
 @keyframes waPulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 30px rgba(37,211,102,.7),0 0 0 8px rgba(37,211,102,.1)}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.96)}}
-@keyframes barGrow{to{width:140px}}
-
-/* LOADER */
-#loader{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .9s,visibility .9s}
-#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
-.ld-img{width:150px;height:auto;animation:pulse 1.5s ease-in-out infinite}
-.ld-sub{font-size:.54rem;letter-spacing:.45em;color:var(--gold);margin-top:1rem;font-weight:300;text-align:center}
-.ld-bar{width:0;height:1px;background:var(--gold);margin:1.2rem auto 0;animation:barGrow 1.8s ease-out forwards}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.4rem 5%;display:flex;align-items:center;justify-content:space-between;transition:all .5s}
@@ -73,7 +64,7 @@ nav.scrolled .nav-logo img{height:38px}
 .lb.active,.lb:hover{border-color:var(--gold);color:var(--gold)}
 .nav-cta{font-size:.56rem;letter-spacing:.16em;padding:.52rem 1.3rem;border:1px solid var(--gold);color:var(--gold);background:transparent;text-decoration:none;text-transform:uppercase;font-weight:500;transition:all .35s;font-family:var(--sans);white-space:nowrap}
 .nav-cta:hover{background:var(--gold);color:var(--black)}
-.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;background:transparent;border:0;color:inherit}
 .nav-burger span{width:22px;height:1px;background:var(--white);display:block}
 .mob-ov{display:none;position:fixed;inset:0;background:rgba(14,14,14,.98);flex-direction:column;align-items:center;justify-content:center;gap:2rem;z-index:998;list-style:none}
 .mob-ov.open{display:flex}
@@ -83,7 +74,7 @@ nav.scrolled .nav-logo img{height:38px}
 .mob-langs{display:flex;gap:.6rem;margin-top:.5rem}
 .mob-langs .lb{font-size:.68rem;padding:.38rem .75rem;min-height:44px;min-width:36px}
 
-.seo-h1{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.seo-h1{font-family:var(--serif);font-size:clamp(1.45rem,3.5vw,2.35rem);font-weight:300;line-height:1.15;color:var(--white);max-width:780px;margin:0 auto 1.1rem;text-wrap:balance}
 
 /* HERO */
 #hero{position:relative;height:100svh;min-height:640px;display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -114,16 +105,19 @@ section{padding:clamp(5rem,9vw,8rem) 5%}
 .sl{font-size:.52rem;letter-spacing:.45em;color:var(--gold);text-transform:uppercase;font-weight:500;margin-bottom:1rem}
 .st{font-family:var(--serif);font-size:clamp(2.4rem,5.5vw,5rem);font-weight:300;line-height:1.08;color:var(--black)}
 .st em{font-style:italic;color:var(--teal)}
-.reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease,transform .9s ease}
-.reveal.visible{opacity:1;transform:none}
+.reveal{opacity:1;transform:none}
+.reveal-ready .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease,transform .9s ease}
+.reveal-ready .reveal.visible{opacity:1;transform:none}
 .shimmer{background:linear-gradient(90deg,var(--gold) 0%,var(--gl) 50%,var(--gold) 100%);background-size:200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite}
 
+
+:where(a,button,[role="button"],input):focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal-ready .reveal,.reveal,.hero-eyebrow,.hero-logo,.seo-h1,.hero-tag,.hero-btns,.hero-scroll,.shimmer,.wa-float{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}.fl-track{transition:none!important}}
 
 /* SEO LOCAL */
 .seo-local{background:var(--white);padding:clamp(3.5rem,6vw,5rem) 5%;border-bottom:1px solid var(--grl)}
 .seo-local .seo-wrap{max-width:920px;margin:0 auto;text-align:center}
 .seo-local .seo-text{max-width:760px;margin:1.5rem auto 0;font-size:.86rem;line-height:1.9;color:var(--gray);font-weight:300}
-.seo-local .seo-keywords{margin-top:1.4rem;font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:600;line-height:1.9}
 
 /* EXPERIENCE */
 #experience{background:var(--black)}
@@ -260,8 +254,8 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 .wa-float svg{width:27px;height:27px;fill:white}
 
 /* MODALS */
-.modal-ov{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
-.modal-ov.open{opacity:1;visibility:visible}
+.modal-ov{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-ov.open{display:flex}
 .modal-box{background:var(--black);border:1px solid rgba(201,168,76,.25);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(30px);transition:transform .4s;scrollbar-width:thin;scrollbar-color:var(--gold) transparent}
 .modal-ov.open .modal-box{transform:translateY(0)}
 .modal-box::-webkit-scrollbar{width:3px}
@@ -325,22 +319,14 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 </head>
 <body>
 
-<div id="loader">
-  <div style="text-align:center">
-    <img class="ld-img" src="/assets/img/img-01-cc3e89aa2668.webp" alt="La Gelateria de Roses"/>
-    <div class="ld-sub">GELATO ARTIGIANALE · ROSES</div>
-    <div class="ld-bar"></div>
-  </div>
-</div>
-
-<ul class="mob-ov" id="mobMenu">
-  <button class="mob-close" onclick="closeMenu()">✕</button>
-  <li><a href="#experience" onclick="closeMenu()" data-i18n="nav_about">Nosotros</a></li>
-  <li><a href="#flavors" onclick="closeMenu()" data-i18n="nav_flavors">Sabores</a></li>
-  <li><a href="#products" onclick="closeMenu()" data-i18n="nav_menu">Carta</a></li>
-  <li><a href="#gallery" onclick="closeMenu()" data-i18n="nav_gallery">Galería</a></li>
-  <li><a href="#reviews" onclick="closeMenu()" data-i18n="nav_reviews">Reseñas</a></li>
-  <li><a href="#location" onclick="closeMenu()" data-i18n="nav_location">Ubicación</a></li>
+<ul class="mob-ov" id="mobMenu" aria-label="Navigationsmenü" aria-hidden="true">
+  <button type="button" class="mob-close" aria-label="Menü schließen" onclick="closeMenu()">✕</button>
+  <li><a href="#experience" onclick="closeMenu()" data-i18n="nav_about">Über uns</a></li>
+  <li><a href="#flavors" onclick="closeMenu()" data-i18n="nav_flavors">Sorten</a></li>
+  <li><a href="#products" onclick="closeMenu()" data-i18n="nav_menu">Karte</a></li>
+  <li><a href="#gallery" onclick="closeMenu()" data-i18n="nav_gallery">Galerie</a></li>
+  <li><a href="#reviews" onclick="closeMenu()" data-i18n="nav_reviews">Bewertungen</a></li>
+  <li><a href="#location" onclick="closeMenu()" data-i18n="nav_location">Standort</a></li>
   <li class="mob-langs">
     <a class="lb" href="/">ES</a>
       <a class="lb" href="/ca/">CA</a>
@@ -352,14 +338,14 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 </ul>
 
 <nav id="navbar">
-  <a href="#" class="nav-logo"><img src="/assets/img/img-01-cc3e89aa2668.webp" alt="La Gelateria de Roses"/></a>
+  <a href="/de/" class="nav-logo" aria-label="La Gelateria de Roses"><img src="/assets/img/img-01-cc3e89aa2668.webp" width="800" height="686" decoding="async" alt="La Gelateria de Roses"/></a>
   <ul class="nav-links">
-    <li><a href="#experience" data-i18n="nav_about">Nosotros</a></li>
-    <li><a href="#flavors" data-i18n="nav_flavors">Sabores</a></li>
-    <li><a href="#products" data-i18n="nav_menu">Carta</a></li>
-    <li><a href="#gallery" data-i18n="nav_gallery">Galería</a></li>
-    <li><a href="#reviews" data-i18n="nav_reviews">Reseñas</a></li>
-    <li><a href="#location" data-i18n="nav_location">Ubicación</a></li>
+    <li><a href="#experience" data-i18n="nav_about">Über uns</a></li>
+    <li><a href="#flavors" data-i18n="nav_flavors">Sorten</a></li>
+    <li><a href="#products" data-i18n="nav_menu">Karte</a></li>
+    <li><a href="#gallery" data-i18n="nav_gallery">Galerie</a></li>
+    <li><a href="#reviews" data-i18n="nav_reviews">Bewertungen</a></li>
+    <li><a href="#location" data-i18n="nav_location">Standort</a></li>
   </ul>
   <div class="nav-right">
     <div class="lang-sel">
@@ -370,31 +356,31 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
       <a class="lb" href="/nl/">NL</a>
       <a class="lb active" href="/de/">DE</a>
     </div>
-    <a href="https://www.google.com/maps/dir/?api=1&destination=La+Gelateria+de+Roses&destination_place_id=ChIJ2SAQYFJhuhIRpVJqYaT7svc" target="_blank" class="nav-cta" data-i18n="nav_dir">Cómo llegar</a>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=La+Gelateria+de+Roses&destination_place_id=ChIJ2SAQYFJhuhIRpVJqYaT7svc" target="_blank" class="nav-cta" data-i18n="nav_dir" rel="noopener noreferrer">Route</a>
   </div>
-  <div class="nav-burger" onclick="openMenu()"><span></span><span></span><span></span></div>
+  <button type="button" class="nav-burger" id="navMenuButton" aria-label="Menü öffnen" aria-controls="mobMenu" aria-expanded="false" onclick="openMenu()"><span></span><span></span><span></span></button>
 </nav>
 
 <section id="hero">
-  <div class="hero-bg" id="heroBg"><img src="/assets/img/img-55-b61aa90842cd.webp" alt="Gelato Artigianale La Gelateria de Roses" fetchpriority="high"/></div>
+  <div class="hero-bg" id="heroBg"><img src="/assets/img/img-55-b61aa90842cd.webp" width="1600" height="901" alt="Gelato Artigianale La Gelateria de Roses" fetchpriority="high"/></div>
   <div class="hero-ov"></div>
   <div class="hero-content">
     <p class="hero-eyebrow shimmer">Costa Brava · Roses · Catalunya</p>
-    <img class="hero-logo" src="/assets/img/img-01-cc3e89aa2668.webp" alt="La Gelateria de Roses"/>
+    <img class="hero-logo" src="/assets/img/img-01-cc3e89aa2668.webp" width="800" height="686" decoding="async" alt="La Gelateria de Roses"/>
         <h1 class="seo-h1">La Gelateria de Roses | Handwerkliche Eisdiele und italienisches Gelato in Roses, Costa Brava</h1>
     <div class="hero-div"></div>
-    <p class="hero-tag" data-i18n="hero_tag">Helado artesanal italiano en el corazón de Roses</p>
+    <p class="hero-tag" data-i18n="hero_tag">Handwerkliches italienisches Gelato im Herzen von Roses</p>
     <div class="hero-btns">
-      <a href="https://www.google.com/maps/dir/?api=1&destination=La+Gelateria+de+Roses&destination_place_id=ChIJ2SAQYFJhuhIRpVJqYaT7svc" target="_blank" class="btn-gold" data-i18n="nav_dir">Cómo llegar</a>
-      <a href="#flavors" class="btn-ghost" data-i18n="hero_btn">Ver sabores</a>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=La+Gelateria+de+Roses&destination_place_id=ChIJ2SAQYFJhuhIRpVJqYaT7svc" target="_blank" class="btn-gold" data-i18n="nav_dir" rel="noopener noreferrer">Route</a>
+      <a href="#flavors" class="btn-ghost" data-i18n="hero_btn">Sorten ansehen</a>
     </div>
   </div>
-  <div class="hero-scroll"><span data-i18n="scroll">Descubrir</span><div class="scroll-bar"></div></div>
+  <div class="hero-scroll"><span data-i18n="scroll">Entdecken</span><div class="scroll-bar"></div></div>
   <div class="hero-stats">
-    <div class="stat"><span class="stat-num">+50</span><span class="stat-label" data-i18n="s_fl">Sabores</span></div>
-    <div class="stat"><span class="stat-num">4.9★</span><span class="stat-label" data-i18n="s_rt">Valoración</span></div>
-    <div class="stat"><span class="stat-num">+650</span><span class="stat-label" data-i18n="s_rv">Reseñas</span></div>
-    <div class="stat"><span class="stat-num">100%</span><span class="stat-label" data-i18n="s_ar">Artesanal</span></div>
+    <div class="stat"><span class="stat-num">+50</span><span class="stat-label" data-i18n="s_fl">Sorten</span></div>
+    <div class="stat"><span class="stat-num">4.9★</span><span class="stat-label" data-i18n="s_rt">Bewertung</span></div>
+    <div class="stat"><span class="stat-num">+650</span><span class="stat-label" data-i18n="s_rv">Bewertungen</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-label" data-i18n="s_ar">Handwerklich</span></div>
   </div>
 </section>
 
@@ -426,8 +412,8 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
   <div class="glr-score">4,8 / 5 bei Google</div>
   <div class="glr-sub">Über 600 echte Kundenbewertungen</div>
   <div class="glr-btns">
-    <a class="glr-btn glr-btn-primary" href="https://g.page/r/CaVSamGk-7L3EBM" target="_blank" rel="noopener">Echte Bewertungen lesen</a>
-    <a class="glr-btn glr-btn-ghost" href="https://g.page/r/CaVSamGk-7L3EBM/review" target="_blank" rel="noopener">Bewertung hinterlassen</a>
+    <a class="glr-btn glr-btn-primary" href="https://g.page/r/CaVSamGk-7L3EBM" target="_blank" rel="noopener noreferrer">Echte Bewertungen lesen</a>
+    <a class="glr-btn glr-btn-ghost" href="https://g.page/r/CaVSamGk-7L3EBM/review" target="_blank" rel="noopener noreferrer">Bewertung hinterlassen</a>
   </div>
 </section>
 
@@ -437,283 +423,282 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
     <p class="sl shimmer">Eisdiele in Roses</p>
     <h2 class="st">Italienisches Gelato in <em>Roses</em></h2>
     <p class="seo-text">La Gelateria de Roses ist eine handwerkliche Eisdiele im Zentrum von Roses an der Costa Brava. Wir bereiten italienisches Gelato täglich frisch zu, mit über 50 Sorten, Crêpes, Waffeln, Milchshakes, Smoothies und Slush-Getränken — perfekt nach dem Strand oder beim Spaziergang durch Roses.</p>
-    <p class="seo-keywords">Eisdiele in Roses · handwerkliches Eis · italienisches Gelato · Costa Brava · Crêpes · Waffeln · Milchshakes</p>
-  </div>
+      </div>
 </section>
 
 <section id="experience">
   <div class="reveal">
-    <p class="sl shimmer" data-i18n="exp_label">Nuestra filosofía</p>
-    <h2 class="st" style="color:var(--white)" data-i18n="exp_title">Una experiencia<br><em style="color:var(--tl)">que se recuerda</em></h2>
+    <p class="sl shimmer" data-i18n="exp_label">Unsere Philosophie</p>
+    <h2 class="st" style="color:var(--white)" data-i18n="exp_title">Ein Erlebnis<br><em style='color:var(--tl)'>das man nicht vergisst</em></h2>
   </div>
   <div class="exp-grid">
     <div class="exp-card reveal" style="transition-delay:.06s">
-      <div class="exp-img"><img src="/assets/img/img-03-6a81cee677d4.webp" alt="Elaboración gelato" loading="lazy"/></div>
-      <div class="exp-body"><span class="exp-num">01</span><div class="exp-icon">🍨</div><h3 data-i18n="e1t">Elaboración Diaria</h3><p data-i18n="e1d">Cada mañana preparamos nuestro gelato con recetas tradicionales italianas. Sin conservantes, sin compromiso. Solo frescura real.</p></div>
+      <div class="exp-img"><img src="/assets/img/img-03-6a81cee677d4.webp" width="600" height="444" decoding="async" alt="Gelato-Herstellung" loading="lazy"/></div>
+      <div class="exp-body"><span class="exp-num">01</span><div class="exp-icon">🍨</div><h3 data-i18n="e1t">Tägliche Herstellung</h3><p data-i18n="e1d">Jeden Morgen bereiten wir unser Gelato nach traditionellen italienischen Rezepten zu. Ohne Konservierungsstoffe, ohne Kompromisse.</p></div>
     </div>
     <div class="exp-card reveal" style="transition-delay:.12s">
-      <div class="exp-img"><img src="/assets/img/img-04-69e647106443.webp" alt="Ingredientes" loading="lazy"/></div>
-      <div class="exp-body"><span class="exp-num">02</span><div class="exp-icon">🌿</div><h3 data-i18n="e2t">Ingredientes Seleccionados</h3><p data-i18n="e2d">Pistachos de Sicilia, avellanas del Piamonte, fruta de temporada local. Cada ingrediente elegido con exigencia absoluta.</p></div>
+      <div class="exp-img"><img src="/assets/img/img-04-69e647106443.webp" width="600" height="443" decoding="async" alt="Ausgewählte Zutaten" loading="lazy"/></div>
+      <div class="exp-body"><span class="exp-num">02</span><div class="exp-icon">🌿</div><h3 data-i18n="e2t">Ausgewählte Zutaten</h3><p data-i18n="e2d">Pistazien aus Sizilien, Haselnüsse aus dem Piemont und saisonale Früchte. Jede Zutat wird sorgfältig ausgewählt.</p></div>
     </div>
     <div class="exp-card reveal" style="transition-delay:.18s">
-      <div class="exp-img"><img src="/assets/img/img-05-fc3d68b0f8c3.webp" alt="Inspiración italiana" loading="lazy"/></div>
-      <div class="exp-body"><span class="exp-num">03</span><div class="exp-icon">🇮🇹</div><h3 data-i18n="e3t">Inspiración Italiana</h3><p data-i18n="e3d">Recetas auténticas de las mejores gelaterías de Milán y Florencia, traídas al Mediterráneo con alma propia.</p></div>
+      <div class="exp-img"><img src="/assets/img/img-05-fc3d68b0f8c3.webp" width="600" height="441" decoding="async" alt="Italienische Inspiration" loading="lazy"/></div>
+      <div class="exp-body"><span class="exp-num">03</span><div class="exp-icon">🇮🇹</div><h3 data-i18n="e3t">Italienische Inspiration</h3><p data-i18n="e3d">Authentische Rezepte der besten Gelaterias aus Mailand und Florenz, an die Mittelmeerküste gebracht.</p></div>
     </div>
     <div class="exp-card reveal" style="transition-delay:.24s">
-      <div class="exp-img"><img src="/assets/img/img-06-c53077be9dfe.webp" alt="Experiencia única" loading="lazy"/></div>
-      <div class="exp-body"><span class="exp-num">04</span><div class="exp-icon">☀️</div><h3 data-i18n="e4t">Experiencia Única</h3><p data-i18n="e4d">El lugar perfecto para disfrutar después de la playa. Ven, descansa y saborea algo verdaderamente especial en Roses.</p></div>
+      <div class="exp-img"><img src="/assets/img/img-06-c53077be9dfe.webp" width="600" height="450" decoding="async" alt="Erlebnis bei La Gelateria de Roses" loading="lazy"/></div>
+      <div class="exp-body"><span class="exp-num">04</span><div class="exp-icon">☀️</div><h3 data-i18n="e4t">Einzigartiges Erlebnis</h3><p data-i18n="e4d">Der perfekte Ort nach dem Strand. Kommen Sie vorbei, entspannen Sie sich und genießen Sie etwas Besonderes in Roses.</p></div>
     </div>
   </div>
 </section>
 
 <section id="flavors" style="padding:0">
   <div class="fl-header reveal">
-    <p class="sl shimmer" data-i18n="fl_label">Nuestros sabores</p>
-    <h2 class="st" style="color:var(--white)" data-i18n="fl_title">+50 sabores que<br><em style="color:var(--tl)">enamoran</em></h2>
+    <p class="sl shimmer" data-i18n="fl_label">Unsere Sorten</p>
+    <h2 class="st" style="color:var(--white)" data-i18n="fl_title">+50 Sorten die<br><em style='color:var(--tl)'>begeistern</em></h2>
   </div>
   <div class="fl-track-wrap">
     <div class="fl-track" id="flTrack">
       
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-07-4df97b8d8514.webp" alt="Pistazie" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-07-4df97b8d8514.webp" width="450" height="450" decoding="async" alt="Pistazie" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Pistazie</h3>
         <p>🌿 Intensiv · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-08-80ada76a2f2e.webp" alt="Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-08-80ada76a2f2e.webp" width="450" height="450" decoding="async" alt="Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Schokolade</h3>
         <p>🍫 Intensiv · Gourmet</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-09-5e0531268210.webp" alt="Erdbeere" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-09-5e0531268210.webp" width="450" height="450" decoding="async" alt="Erdbeere" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Erdbeere</h3>
         <p>🍓 Frisch · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-10-8114a55f90bf.webp" alt="Vanille" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-10-8114a55f90bf.webp" width="450" height="450" decoding="async" alt="Vanille" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Vanille</h3>
         <p>🍦 Cremig · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-11-cedfd4bdcaef.webp" alt="Mango" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-11-cedfd4bdcaef.webp" width="450" height="450" decoding="async" alt="Mango" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Mango</h3>
         <p>🥭 Cremig · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-12-e0e6cc750a4a.webp" alt="Stracciatella" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-12-e0e6cc750a4a.webp" width="450" height="450" decoding="async" alt="Stracciatella" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Stracciatella</h3>
         <p>⚡ Klassisch · Unwiderstehlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-13-755363c1dc94.webp" alt="Zitrone" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-13-755363c1dc94.webp" width="450" height="450" decoding="async" alt="Zitrone" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Zitrone</h3>
         <p>🍋 Erfrischend · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-14-a3f271f6fa9e.webp" alt="Himbeere" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-14-a3f271f6fa9e.webp" width="450" height="450" decoding="async" alt="Himbeere" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Himbeere</h3>
         <p>🫐 Intensiv · Fruchtig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-15-6ea1ea84bc3c.webp" alt="Dulce de Leche" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-15-6ea1ea84bc3c.webp" width="450" height="450" decoding="async" alt="Dulce de Leche" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Dulce de Leche</h3>
         <p>🍮 Cremig · Unwiderstehlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-16-c258a6b3da69.webp" alt="Haselnuss" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-16-c258a6b3da69.webp" width="450" height="450" decoding="async" alt="Haselnuss" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Haselnuss</h3>
         <p>🌰 Cremig · Handwerklich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-17-13b7a128a6c0.webp" alt="Crema Catalana" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-17-13b7a128a6c0.webp" width="450" height="450" decoding="async" alt="Crema Catalana" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Crema Catalana</h3>
         <p>🔥 Traditionell · Einzigartig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-18-2c9dc2242e6c.webp" alt="Salzkaramell" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-18-2c9dc2242e6c.webp" width="450" height="450" decoding="async" alt="Salzkaramell" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Salzkaramell</h3>
         <p>🧂 Süß · Salzig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-19-de7f0770eb13.webp" alt="Cheesecake" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-19-de7f0770eb13.webp" width="450" height="450" decoding="async" alt="Cheesecake" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Cheesecake</h3>
         <p>🧁 Cremig · Unwiderstehlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-20-5e42d0090b7f.webp" alt="Turrón" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-20-5e42d0090b7f.webp" width="450" height="450" decoding="async" alt="Turrón" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Turrón</h3>
         <p>🍯 Cremig · Traditionell</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-21-d482b9d47eda.webp" alt="Kokos" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-21-d482b9d47eda.webp" width="450" height="450" decoding="async" alt="Kokos" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kokos</h3>
         <p>🥥 Zart · Exotisch</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-22-896c3a1dd9c4.webp" alt="Kaffee" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-22-896c3a1dd9c4.webp" width="450" height="450" decoding="async" alt="Kaffee" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kaffee</h3>
         <p>☕ Intensiv · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-23-cb501b38f30b.webp" alt="Wassermelone" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-23-cb501b38f30b.webp" width="450" height="450" decoding="async" alt="Wassermelone" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Wassermelone</h3>
         <p>🍉 Erfrischend · Fruchtig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-24-e9ba39705fe0.webp" alt="Maracuja" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-24-e9ba39705fe0.webp" width="450" height="450" decoding="async" alt="Maracuja" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Maracuja</h3>
         <p>🍊 Tropisch · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-25-9330de2f4648.webp" alt="Leche Merengada" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-25-9330de2f4648.webp" width="450" height="450" decoding="async" alt="Leche Merengada" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Leche Merengada</h3>
         <p>🥛 Traditionell · Zart</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-26-d5cae863c6ba.webp" alt="Sahne" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-26-d5cae863c6ba.webp" width="450" height="450" decoding="async" alt="Sahne" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Sahne</h3>
         <p>🍦 Zart · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-27-cae41a250458.webp" alt="Minze-Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-27-cae41a250458.webp" width="450" height="450" decoding="async" alt="Minze-Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Minze-Schokolade</h3>
         <p>🌿 Frisch · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-28-27680ba7920b.webp" alt="Lakritz" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-28-27680ba7920b.webp" width="450" height="450" decoding="async" alt="Lakritz" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Lakritz</h3>
         <p>🖤 Intensiv · Einzigartig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-29-8861a6eb8ae0.webp" alt="Brownie" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-29-8861a6eb8ae0.webp" width="450" height="450" decoding="async" alt="Brownie" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Brownie</h3>
         <p>🍫 Intensiv · Gourmet</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-30-cfe630f5dbb5.webp" alt="Weiße Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-30-cfe630f5dbb5.webp" width="450" height="450" decoding="async" alt="Weiße Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Weiße Schokolade</h3>
         <p>⚪ Süß · Seidig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-31-504d5db093ee.webp" alt="Amarena" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-31-504d5db093ee.webp" width="450" height="450" decoding="async" alt="Amarena" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Amarena</h3>
         <p>🍒 Elegant · Intensiv</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-32-95c3401bd4a4.webp" alt="Schlumpf" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-32-95c3401bd4a4.webp" width="450" height="450" decoding="async" alt="Schlumpf" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Schlumpf</h3>
         <p>💙 Verspielt · Cremig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-33-d48788cae47e.webp" alt="Lotus" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-33-d48788cae47e.webp" width="450" height="450" decoding="async" alt="Lotus" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Lotus</h3>
         <p>🍪 Würzig · Knusprig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-34-1aa8186906ff.webp" alt="Snickers" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-34-1aa8186906ff.webp" width="450" height="450" decoding="async" alt="Snickers" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Snickers</h3>
         <p>🥜 Erdnuss · Karamell</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-35-cefb401eb3c3.webp" alt="Oreo" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-35-cefb401eb3c3.webp" width="450" height="450" decoding="async" alt="Oreo" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Oreo</h3>
         <p>⚫ Cookies · Cream</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-36-f9d4b3d6721f.webp" alt="Kinder Ei" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-36-f9d4b3d6721f.webp" width="450" height="450" decoding="async" alt="Kinder Ei" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kinder Ei</h3>
         <p>🥚 Zart · Verführerisch</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-37-e9068be674a7.webp" alt="Veilchen" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-37-e9068be674a7.webp" width="450" height="450" decoding="async" alt="Veilchen" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Veilchen</h3>
         <p>💜 Blumig · Fein</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-38-931d59a6eac5.webp" alt="Kinder Bueno" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-38-931d59a6eac5.webp" width="450" height="450" decoding="async" alt="Kinder Bueno" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Kinder Bueno</h3>
         <p>🍫 Cremig · Knusprig</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-39-859a7936e265.webp" alt="Melone" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-39-859a7936e265.webp" width="450" height="450" decoding="async" alt="Melone" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Melone</h3>
         <p>🍈 Süß · Sommerlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-40-fccda11a9e5f.webp" alt="Joghurt" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-40-fccda11a9e5f.webp" width="450" height="450" decoding="async" alt="Joghurt" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Joghurt</h3>
         <p>🥛 Zart · Natürlich</p>
       </div>
     </div>
     <div class="fl-slide">
-      <div class="fl-img"><img src="/assets/img/img-41-2c465592766f.webp" alt="Dubai-Schokolade" loading="lazy"/></div>
+      <div class="fl-img"><img src="/assets/img/img-41-2c465592766f.webp" width="450" height="450" decoding="async" alt="Dubai-Schokolade" loading="lazy"/></div>
       <div class="fl-info">
         <h3>Dubai-Schokolade</h3>
         <p>✨ Pistazie · Gourmet</p>
@@ -722,91 +707,91 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
     </div>
   </div>
   <div class="fl-controls">
-    <button class="fl-btn" onclick="flPrev()">←</button>
+    <button type="button" class="fl-btn" aria-label="Vorherige Sorte" onclick="flPrev()">←</button>
     <div class="fl-dots" id="flDots"></div>
-    <button class="fl-btn" onclick="flNext()">→</button>
+    <button type="button" class="fl-btn" aria-label="Nächste Sorte" onclick="flNext()">→</button>
   </div>
 </section>
 
 <section id="products">
   <div class="prod-intro reveal">
-    <p class="sl shimmer" data-i18n="p_label">Nuestra carta</p>
-    <h2 class="st" data-i18n="p_title">Todo lo que<br><em>te apetece</em></h2>
+    <p class="sl shimmer" data-i18n="p_label">Unsere Karte</p>
+    <h2 class="st" data-i18n="p_title">Alles worauf Sie<br><em>Lust haben</em></h2>
   </div>
   <div class="prod-grid">
-    <div class="prod-card reveal" style="transition-delay:.05s" onclick="openModal('m-gelato')">
-      <div class="prod-img"><img src="/assets/img/img-58-59384cb30a9e.webp" alt="Gelato Artigianale" loading="lazy"/><div class="prod-ov"></div><span class="prod-badge">Signature</span></div>
-      <div class="prod-body"><h3>Gelato Artigianale</h3><p data-i18n="p1d">Pistacho de Sicilia, Stracciatella, Tiramisù, Kinder, Lotus, Dubai... +50 sabores elaborados cada día.</p><span class="prod-arrow" data-i18n="discover">Descubrir →</span></div>
+    <div class="prod-card reveal" style="transition-delay:.05s" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="m-gelato" onclick="openModal('m-gelato')" onkeydown="handleCardKey(event,'m-gelato')">
+      <div class="prod-img"><img src="/assets/img/img-58-59384cb30a9e.webp" width="1000" height="1000" decoding="async" alt="Gelato Artigianale" loading="lazy"/><div class="prod-ov"></div><span class="prod-badge">Signature</span></div>
+      <div class="prod-body"><h3>Gelato Artigianale</h3><p data-i18n="p1d">Sizilianische Pistazie, Stracciatella, Tiramisù, Kinder, Lotus, Dubai... +50 täglich frische Sorten.</p><span class="prod-arrow" data-i18n="discover">Entdecken →</span></div>
     </div>
-    <div class="prod-card reveal" style="transition-delay:.1s" onclick="openModal('m-crepes')">
-      <div class="prod-img"><img src="/assets/img/img-56-938fdc09e565.webp" alt="Crêpes" loading="lazy"/><div class="prod-ov"></div><span class="prod-badge">Bestseller</span></div>
-      <div class="prod-body"><h3>Crêpes</h3><p data-i18n="p2d">Nutella, Kinder, Oreo, Lotus, Dubai Chocolate... Masa ligera elaborada al momento. Irresistibles.</p><span class="prod-arrow" data-i18n="discover">Descubrir →</span></div>
+    <div class="prod-card reveal" style="transition-delay:.1s" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="m-crepes" onclick="openModal('m-crepes')" onkeydown="handleCardKey(event,'m-crepes')">
+      <div class="prod-img"><img src="/assets/img/img-56-938fdc09e565.webp" width="1000" height="1334" decoding="async" alt="Crêpes" loading="lazy"/><div class="prod-ov"></div><span class="prod-badge">Bestseller</span></div>
+      <div class="prod-body"><h3>Crêpes</h3><p data-i18n="p2d">Nutella, Kinder, Oreo, Lotus, Dubai Chocolate... Frisch zubereiteter leichter Teig. Unwiderstehlich.</p><span class="prod-arrow" data-i18n="discover">Entdecken →</span></div>
     </div>
-    <div class="prod-card reveal" style="transition-delay:.15s" onclick="openModal('m-waffles')">
-      <div class="prod-img"><img src="/assets/img/img-57-440a9eba60c4.webp" alt="Waffeln" loading="lazy"/><div class="prod-ov"></div></div>
-      <div class="prod-body"><h3>Waffeln</h3><p data-i18n="p3d">Crujientes por fuera, esponjosos por dentro. Con gelato artesanal, nata fresca y toppings premium.</p><span class="prod-arrow" data-i18n="discover">Descubrir →</span></div>
+    <div class="prod-card reveal" style="transition-delay:.15s" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="m-waffles" onclick="openModal('m-waffles')" onkeydown="handleCardKey(event,'m-waffles')">
+      <div class="prod-img"><img src="/assets/img/img-57-440a9eba60c4.webp" width="1000" height="1000" decoding="async" alt="Waffeln" loading="lazy"/><div class="prod-ov"></div></div>
+      <div class="prod-body"><h3>Waffeln</h3><p data-i18n="p3d">Außen knusprig, innen weich. Mit handwerklichem Gelato, frischer Sahne und Premium-Toppings.</p><span class="prod-arrow" data-i18n="discover">Entdecken →</span></div>
     </div>
-    <div class="prod-card reveal" style="transition-delay:.2s" onclick="openModal('m-milkshakes')">
-      <div class="prod-img"><img src="/assets/img/img-45-7672aefed0f2.webp" alt="Milkshakes" loading="lazy"/><div class="prod-ov"></div></div>
-      <div class="prod-body"><h3>Milkshakes</h3><p data-i18n="p4d">Oreo, Chocolate, Fresa, Pistacho, Lotus, Vainilla... Cremosos y espectaculares con gelato artesanal.</p><span class="prod-arrow" data-i18n="discover">Descubrir →</span></div>
+    <div class="prod-card reveal" style="transition-delay:.2s" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="m-milkshakes" onclick="openModal('m-milkshakes')" onkeydown="handleCardKey(event,'m-milkshakes')">
+      <div class="prod-img"><img src="/assets/img/img-45-7672aefed0f2.webp" width="1000" height="599" decoding="async" alt="Milkshakes" loading="lazy"/><div class="prod-ov"></div></div>
+      <div class="prod-body"><h3>Milkshakes</h3><p data-i18n="p4d">Oreo, Schokolade, Erdbeere, Pistazie, Lotus, Vanille... Cremig und spektakulär mit handwerklichem Gelato.</p><span class="prod-arrow" data-i18n="discover">Entdecken →</span></div>
     </div>
-    <div class="prod-card reveal" style="transition-delay:.25s" onclick="openModal('m-smoothies')">
-      <div class="prod-img"><img src="/assets/img/img-46-da0bf81fb90e.webp" alt="Smoothies" loading="lazy"/><div class="prod-ov"></div></div>
-      <div class="prod-body"><h3>Smoothies</h3><p data-i18n="p5d">Mango, Fresa, Limón, Maracuyá, Melón, Sandía, Coco... Naturales y sin azúcares añadidos.</p><span class="prod-arrow" data-i18n="discover">Descubrir →</span></div>
+    <div class="prod-card reveal" style="transition-delay:.25s" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="m-smoothies" onclick="openModal('m-smoothies')" onkeydown="handleCardKey(event,'m-smoothies')">
+      <div class="prod-img"><img src="/assets/img/img-46-da0bf81fb90e.webp" width="999" height="600" decoding="async" alt="Smoothies" loading="lazy"/><div class="prod-ov"></div></div>
+      <div class="prod-body"><h3>Smoothies</h3><p data-i18n="p5d">Mango, Erdbeere, Zitrone, Maracuja, Melone, Wassermelone, Kokos... Natürlich, ohne zugesetzten Zucker.</p><span class="prod-arrow" data-i18n="discover">Entdecken →</span></div>
     </div>
-    <div class="prod-card reveal" style="transition-delay:.3s" onclick="openModal('m-granizados')">
-      <div class="prod-img"><img src="/assets/img/img-59-62ebd311c98f.webp" alt="Granitas" loading="lazy"/><div class="prod-ov"></div><span class="prod-badge" data-i18n="summer">Verano</span></div>
-      <div class="prod-body"><h3>Granitas</h3><p data-i18n="p6d">Limón, Fresa, Coca-Cola, Mango, Pitufo Tropical... El antídoto para el calor mediterráneo.</p><span class="prod-arrow" data-i18n="discover">Descubrir →</span></div>
+    <div class="prod-card reveal" style="transition-delay:.3s" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="m-granizados" onclick="openModal('m-granizados')" onkeydown="handleCardKey(event,'m-granizados')">
+      <div class="prod-img"><img src="/assets/img/img-59-62ebd311c98f.webp" width="1000" height="1000" decoding="async" alt="Granitas" loading="lazy"/><div class="prod-ov"></div><span class="prod-badge" data-i18n="summer">Sommer</span></div>
+      <div class="prod-body"><h3>Granitas</h3><p data-i18n="p6d">Zitrone, Erdbeere, Coca-Cola, Mango, Tropischer Schlumpf... Die beste Erfrischung gegen die Mittelmeerhitze.</p><span class="prod-arrow" data-i18n="discover">Entdecken →</span></div>
     </div>
   </div>
 </section>
 
 <section id="gallery">
   <div class="reveal" style="max-width:580px">
-    <p class="sl shimmer" data-i18n="g_label">Momentos únicos</p>
-    <h2 class="st" style="color:var(--white)" data-i18n="g_title">El verano tiene<br><em style="color:var(--tl)">este sabor</em></h2>
+    <p class="sl shimmer" data-i18n="g_label">Einzigartige Momente</p>
+    <h2 class="st" style="color:var(--white)" data-i18n="g_title">Der Sommer schmeckt<br><em style='color:var(--tl)'>genau so</em></h2>
   </div>
   <div class="gal-grid reveal" style="transition-delay:.2s">
-    <div class="g-item g1"><img src="/assets/img/img-48-c648a5c42152.webp" alt="Clientes La Gelateria" loading="lazy"/></div>
-    <div class="g-item g2"><img src="/assets/img/img-49-d45117c1edd9.webp" alt="Noche Roses" loading="lazy"/></div>
-    <div class="g-item g3"><img src="/assets/img/img-50-2ff6a37f872d.webp" alt="Vitrina helados" loading="lazy"/></div>
-    <div class="g-item g4"><img src="/assets/img/img-51-93f852b148a2.webp" alt="Sabores gelato" loading="lazy"/></div>
-    <div class="g-item g5"><img src="/assets/img/img-62-891078d1c869.webp" alt="Obrador La Gelateria" loading="lazy"/></div>
-    <div class="g-item g6"><img src="/assets/img/img-60-2d6f961bde31.webp" alt="Fachada La Gelateria" loading="lazy"/></div>
-    <div class="g-item g7"><img src="/assets/img/img-61-e8c9b1a98890.webp" alt="Heladería Roses" loading="lazy"/></div>
+    <div class="g-item g1"><img src="/assets/img/img-48-c648a5c42152.webp" width="900" height="675" decoding="async" alt="Gäste bei La Gelateria de Roses" loading="lazy"/></div>
+    <div class="g-item g2"><img src="/assets/img/img-49-d45117c1edd9.webp" width="675" height="900" decoding="async" alt="La Gelateria de Roses bei Nacht" loading="lazy"/></div>
+    <div class="g-item g3"><img src="/assets/img/img-50-2ff6a37f872d.webp" width="900" height="663" decoding="async" alt="Eistheke" loading="lazy"/></div>
+    <div class="g-item g4"><img src="/assets/img/img-51-93f852b148a2.webp" width="900" height="597" decoding="async" alt="Gelato-Sorten" loading="lazy"/></div>
+    <div class="g-item g5"><img src="/assets/img/img-62-891078d1c869.webp" width="1200" height="1600" decoding="async" alt="Gelato-Werkstatt von La Gelateria de Roses" loading="lazy"/></div>
+    <div class="g-item g6"><img src="/assets/img/img-60-2d6f961bde31.webp" width="1200" height="900" decoding="async" alt="Fassade von La Gelateria de Roses" loading="lazy"/></div>
+    <div class="g-item g7"><img src="/assets/img/img-61-e8c9b1a98890.webp" width="1200" height="1200" decoding="async" alt="Eisdiele in Roses" loading="lazy"/></div>
   </div>
 </section>
 
 <section id="reviews">
   <div class="rev-hdr reveal">
-    <p class="sl shimmer" data-i18n="r_label">Lo que dicen</p>
-    <h2 class="st" data-i18n="r_title">Satisfacción<br><em>garantizada</em></h2>
-    <div style="margin-top:1.5rem"><div class="stars">★★★★★</div><p style="font-size:.76rem;color:var(--gray);font-weight:300" data-i18n="r_count">+600 reseñas · Valoración 4.9 / 5</p></div>
+    <p class="sl shimmer" data-i18n="r_label">Was Gäste sagen</p>
+    <h2 class="st" data-i18n="r_title">Zufriedenheit<br><em>garantiert</em></h2>
+    <div style="margin-top:1.5rem"><div class="stars">★★★★★</div><p style="font-size:.76rem;color:var(--gray);font-weight:300" data-i18n="r_count">+600 Bewertungen · 4.9 / 5</p></div>
   </div>
   <div class="rev-grid">
-    <div class="rev-card reveal" style="transition-delay:.06s"><span class="rev-flag">🇬🇧</span><span class="rev-q">"</span><p class="rev-t">Oh my gosh if you visit Roses, you HAVE to stop here! The flavours are so delicious and the ice cream so smooth. The biggest decision you'll make is how many scoops!</p><p class="rev-a">Sarah T.</p><p class="rev-o">United Kingdom · TripAdvisor · Verano 2024</p><div class="stars-sm">★★★★★</div></div>
-    <div class="rev-card reveal" style="transition-delay:.14s"><span class="rev-flag">🇬🇧</span><span class="rev-q">"</span><p class="rev-t">Absolutely INCREDIBLE! I could not recommend this place enough. The service is one of the best I have ever experienced — they let you try before you choose.</p><p class="rev-a">James M.</p><p class="rev-o">United Kingdom · TripAdvisor · Julio 2025</p><div class="stars-sm">★★★★★</div></div>
-    <div class="rev-card reveal" style="transition-delay:.22s"><span class="rev-flag">🇩🇪</span><span class="rev-q">"</span><p class="rev-t">Das beste Eis das ich jemals in Spanien gegessen habe. 10 Sterne wert. Das Veilcheneis ist einzigartig!</p><p class="rev-a">C. S.</p><p class="rev-o">Deutschland · Google · Agosto 2024</p><div class="stars-sm">★★★★★</div></div>
-    <div class="rev-card reveal" style="transition-delay:.30s"><span class="rev-flag">🇪🇸</span><span class="rev-q">"</span><p class="rev-t">Sitio ideal para tomar un helado, crep, milkshake, gofre y mil variedades. Gran vitrina con muchos sabores. El mejor de Roses sin duda.</p><p class="rev-a">Júlia Bech Solà</p><p class="rev-o">Catalunya · Google · Agosto 2025</p><div class="stars-sm">★★★★★</div></div>
-    <div class="rev-card reveal" style="transition-delay:.38s"><span class="rev-flag">🇫🇷</span><span class="rev-q">"</span><p class="rev-t">Glaces à l'italienne absolument délicieuses. Personne nous servant parlant français et très aimable. On reviendra chaque année!</p><p class="rev-a">Marie L.</p><p class="rev-o">France · TripAdvisor · Julio 2024</p><div class="stars-sm">★★★★★</div></div>
-    <div class="rev-card reveal" style="transition-delay:.46s"><span class="rev-flag">🇬🇧</span><span class="rev-q">"</span><p class="rev-t">The best ice cream and crepes in Roses. Excellent customer service, always welcome you with a big smile. Every year we come back for sure!</p><p class="rev-a">Robert K.</p><p class="rev-o">United Kingdom · TripAdvisor · Verano 2025</p><div class="stars-sm">★★★★★</div></div>
+    <div class="rev-card reveal" style="transition-delay:.06s"><span class="rev-flag">🇬🇧</span><span class="rev-q">"</span><p class="rev-t">Oh my gosh if you visit Roses, you HAVE to stop here! The flavours are so delicious and the ice cream so smooth. The biggest decision you'll make is how many scoops!</p><p class="rev-a">Sarah T.</p><p class="rev-o">Vereinigtes Königreich · TripAdvisor · Sommer 2024</p><div class="stars-sm">★★★★★</div></div>
+    <div class="rev-card reveal" style="transition-delay:.14s"><span class="rev-flag">🇬🇧</span><span class="rev-q">"</span><p class="rev-t">Absolutely INCREDIBLE! I could not recommend this place enough. The service is one of the best I have ever experienced — they let you try before you choose.</p><p class="rev-a">James M.</p><p class="rev-o">Vereinigtes Königreich · TripAdvisor · Juli 2025</p><div class="stars-sm">★★★★★</div></div>
+    <div class="rev-card reveal" style="transition-delay:.22s"><span class="rev-flag">🇩🇪</span><span class="rev-q">"</span><p class="rev-t">Das beste Eis das ich jemals in Spanien gegessen habe. 10 Sterne wert. Das Veilcheneis ist einzigartig!</p><p class="rev-a">C. S.</p><p class="rev-o">Deutschland · Google · August 2024</p><div class="stars-sm">★★★★★</div></div>
+    <div class="rev-card reveal" style="transition-delay:.30s"><span class="rev-flag">🇪🇸</span><span class="rev-q">"</span><p class="rev-t">Sitio ideal para tomar un helado, crep, milkshake, gofre y mil variedades. Gran vitrina con muchos sabores. El mejor de Roses sin duda.</p><p class="rev-a">Júlia Bech Solà</p><p class="rev-o">Katalonien · Google · August 2025</p><div class="stars-sm">★★★★★</div></div>
+    <div class="rev-card reveal" style="transition-delay:.38s"><span class="rev-flag">🇫🇷</span><span class="rev-q">"</span><p class="rev-t">Glaces à l'italienne absolument délicieuses. Personne nous servant parlant français et très aimable. On reviendra chaque année!</p><p class="rev-a">Marie L.</p><p class="rev-o">Frankreich · TripAdvisor · Juli 2024</p><div class="stars-sm">★★★★★</div></div>
+    <div class="rev-card reveal" style="transition-delay:.46s"><span class="rev-flag">🇬🇧</span><span class="rev-q">"</span><p class="rev-t">The best ice cream and crepes in Roses. Excellent customer service, always welcome you with a big smile. Every year we come back for sure!</p><p class="rev-a">Robert K.</p><p class="rev-o">Vereinigtes Königreich · TripAdvisor · Sommer 2025</p><div class="stars-sm">★★★★★</div></div>
   </div>
 </section>
 
 <section id="instagram">
-  <div class="insta-bg"><img src="/assets/img/img-49-d45117c1edd9.webp" alt=""/></div>
+  <div class="insta-bg"><img src="/assets/img/img-49-d45117c1edd9.webp" width="675" height="900" loading="lazy" decoding="async" alt=""/></div>
   <div class="insta-wrap reveal">
-    <p class="sl shimmer" data-i18n="i_label">Síguenos en Instagram</p>
+    <p class="sl shimmer" data-i18n="i_label">Folgen Sie uns auf Instagram</p>
     <p class="insta-handle">@lagelateriaderoses</p>
-    <p style="font-size:.74rem;color:rgba(255,255,255,.45);margin-top:1rem;font-weight:300" data-i18n="i_sub">Cada día nuevas creaciones. Cada foto, una razón más para venir.</p>
+    <p style="font-size:.74rem;color:rgba(255,255,255,.45);margin-top:1rem;font-weight:300" data-i18n="i_sub">Jeden Tag neue Kreationen. Jedes Foto ein weiterer Grund vorbeizukommen.</p>
     <div class="insta-strip">
-      <img src="/assets/img/img-63-cbbf020d0975.webp" alt="cacao" loading="lazy"/>
-      <img src="/assets/img/img-64-dcf095551f0c.webp" alt="pistacho" loading="lazy"/>
-      <img src="/assets/img/img-65-9cd17801d85c.webp" alt="dubai" loading="lazy"/>
-      <img src="/assets/img/img-66-93163beaa9ef.webp" alt="cherry" loading="lazy"/>
-      <img src="/assets/img/img-67-d03e047ec3ad.webp" alt="avellana" loading="lazy"/>
+      <img src="/assets/img/img-63-cbbf020d0975.webp" width="800" height="800" decoding="async" alt="Kakao-Gelato" loading="lazy"/>
+      <img src="/assets/img/img-64-dcf095551f0c.webp" width="800" height="1067" decoding="async" alt="Pistazien-Gelato" loading="lazy"/>
+      <img src="/assets/img/img-65-9cd17801d85c.webp" width="800" height="1067" decoding="async" alt="Dubai-Gelato" loading="lazy"/>
+      <img src="/assets/img/img-66-93163beaa9ef.webp" width="800" height="1067" decoding="async" alt="Kirsch-Gelato" loading="lazy"/>
+      <img src="/assets/img/img-67-d03e047ec3ad.webp" width="800" height="1067" decoding="async" alt="Haselnuss-Gelato" loading="lazy"/>
     </div>
-    <a href="https://instagram.com/lagelateriaderoses" target="_blank" class="insta-cta" data-i18n="i_btn">Seguir en Instagram</a>
+    <a href="https://instagram.com/lagelateriaderoses" target="_blank" class="insta-cta" data-i18n="i_btn" rel="noopener noreferrer">Auf Instagram folgen</a>
   </div>
 </section>
 
@@ -830,18 +815,18 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 <section id="location">
   <div class="loc-wrap">
     <div class="reveal">
-      <p class="sl shimmer" data-i18n="l_label">Encuéntranos</p>
-      <h2 class="st" data-i18n="l_title">En el corazón<br><em>de Roses</em></h2>
+      <p class="sl shimmer" data-i18n="l_label">Sie finden uns</p>
+      <h2 class="st" data-i18n="l_title">Im Herzen<br><em>von Roses</em></h2>
       <p class="loc-addr">Carrer Pi i Sunyer 6</p>
       <p class="loc-city">17480 Roses · Costa Brava · Girona</p>
-      <p class="ht" data-i18n="h_title">Horario de temporada</p>
-      <div class="hr"><strong data-i18n="h_mf">Lunes – Viernes</strong><span>11:00 – 23:00</span></div>
-      <div class="hr"><strong data-i18n="h_sat">Sábado</strong><span>10:30 – 00:00</span></div>
-      <div class="hr"><strong data-i18n="h_sun">Domingo</strong><span>10:30 – 23:30</span></div>
-      <div class="hr"><span style="color:var(--teal);font-size:.7rem;font-style:italic" data-i18n="h_sum">Abierto todo el verano · Julio & Agosto sin descanso</span></div>
+      <p class="ht" data-i18n="h_title">Öffnungszeiten</p>
+      <div class="hr"><strong data-i18n="h_mf">Montag – Freitag</strong><span>11:00 – 23:00</span></div>
+      <div class="hr"><strong data-i18n="h_sat">Samstag</strong><span>10:30 – 00:00</span></div>
+      <div class="hr"><strong data-i18n="h_sun">Sonntag</strong><span>10:30 – 23:30</span></div>
+      <div class="hr"><span style="color:var(--teal);font-size:.7rem;font-style:italic" data-i18n="h_sum">Den ganzen Sommer geöffnet · Juli & August ohne Ruhetag</span></div>
       <div class="loc-acts">
-        <a href="https://www.google.com/maps/dir/?api=1&destination=La+Gelateria+de+Roses&destination_place_id=ChIJ2SAQYFJhuhIRpVJqYaT7svc" target="_blank" class="btn-teal" data-i18n="nav_dir">📍 Cómo llegar</a>
-        <a href="https://wa.me/34647319686" target="_blank" class="btn-wa">💬 WhatsApp</a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=La+Gelateria+de+Roses&destination_place_id=ChIJ2SAQYFJhuhIRpVJqYaT7svc" target="_blank" class="btn-teal" data-i18n="nav_dir" rel="noopener noreferrer">Route</a>
+        <a href="https://wa.me/34647319686" target="_blank" class="btn-wa" rel="noopener noreferrer">💬 WhatsApp</a>
       </div>
       <div class="contact-info">
         <a href="tel:+34972253795">📞 +34 972 253 795</a>
@@ -859,28 +844,28 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
 <footer>
   <div class="foot-grid">
     <div>
-      <div class="foot-logo"><img src="/assets/img/img-01-cc3e89aa2668.webp" alt="La Gelateria de Roses"/></div>
-      <p class="foot-desc" data-i18n="f_desc">Elaboramos nuestro gelato cada día con ingredientes seleccionados y la autenticidad de las mejores gelaterías italianas, en el corazón de la Costa Brava.</p>
+      <div class="foot-logo"><img src="/assets/img/img-01-cc3e89aa2668.webp" width="800" height="686" loading="lazy" decoding="async" alt="La Gelateria de Roses"/></div>
+      <p class="foot-desc" data-i18n="f_desc">Wir bereiten unser Gelato jeden Tag mit ausgewählten Zutaten und der Authentizität der besten italienischen Gelaterias zu.</p>
       <div class="foot-socials">
-        <a href="https://instagram.com/lagelateriaderoses" target="_blank" class="soc">📷</a>
-        <a href="https://facebook.com/lagelateriaderoses" target="_blank" class="soc">📘</a>
-        <a href="https://wa.me/34647319686" target="_blank" class="soc">💬</a>
-        <a href="https://www.tripadvisor.com/Restaurant_Review-g262060-d10093926" target="_blank" class="soc">⭐</a>
+        <a href="https://instagram.com/lagelateriaderoses" target="_blank" class="soc" rel="noopener noreferrer">📷</a>
+        <a href="https://facebook.com/lagelateriaderoses" target="_blank" class="soc" rel="noopener noreferrer">📘</a>
+        <a href="https://wa.me/34647319686" target="_blank" class="soc" rel="noopener noreferrer">💬</a>
+        <a href="https://www.tripadvisor.com/Restaurant_Review-g262060-d10093926" target="_blank" class="soc" rel="noopener noreferrer">⭐</a>
       </div>
     </div>
     <div class="foot-col">
-      <h4 data-i18n="f_nav">Navegación</h4>
+      <h4 data-i18n="f_nav">Navigation</h4>
       <ul>
-        <li><a href="#experience" data-i18n="nav_about">Nosotros</a></li>
-        <li><a href="#flavors" data-i18n="nav_flavors">Sabores</a></li>
-        <li><a href="#products" data-i18n="nav_menu">Carta</a></li>
-        <li><a href="#gallery" data-i18n="nav_gallery">Galería</a></li>
-        <li><a href="#reviews" data-i18n="nav_reviews">Reseñas</a></li>
-        <li><a href="#location" data-i18n="nav_location">Ubicación</a></li>
+        <li><a href="#experience" data-i18n="nav_about">Über uns</a></li>
+        <li><a href="#flavors" data-i18n="nav_flavors">Sorten</a></li>
+        <li><a href="#products" data-i18n="nav_menu">Karte</a></li>
+        <li><a href="#gallery" data-i18n="nav_gallery">Galerie</a></li>
+        <li><a href="#reviews" data-i18n="nav_reviews">Bewertungen</a></li>
+        <li><a href="#location" data-i18n="nav_location">Standort</a></li>
       </ul>
     </div>
     <div class="foot-col">
-      <h4 data-i18n="f_contact">Contacto</h4>
+      <h4 data-i18n="f_contact">Kontakt</h4>
       <address>Carrer Pi i Sunyer 6<br>17480 Roses<br>Costa Brava · Girona<br><br>
         <a href="tel:+34972253795">+34 972 253 795</a><br>
         <a href="https://wa.me/34647319686">+34 647 319 686</a><br>
@@ -889,103 +874,103 @@ footer{background:var(--black);border-top:1px solid rgba(201,168,76,.12);padding
     </div>
   </div>
   <div class="foot-btm">
-    <p>© 2026 La Gelateria de Roses. <span data-i18n="f_rights">Todos los derechos reservados.</span></p>
+    <p>© 2026 La Gelateria de Roses. <span data-i18n="f_rights">Alle Rechte vorbehalten.</span></p>
     <span>Gelato Artigianale · Dal cuore italiano</span>
   </div>
 </footer>
 
-<a href="https://wa.me/34647319686" target="_blank" class="wa-float" aria-label="WhatsApp">
+<a href="https://wa.me/34647319686" target="_blank" class="wa-float" aria-label="WhatsApp" rel="noopener noreferrer">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <!-- MODALS -->
-<div class="modal-ov" id="m-gelato" onclick="closeModalOv(event,'m-gelato')">
-  <div class="modal-box"><button class="m-close" onclick="closeModal('m-gelato')">✕</button>
-    <div class="m-hero"><img src="/assets/img/img-58-59384cb30a9e.webp" alt="Gelato"/><div class="m-hero-ov"></div></div>
+<div class="modal-ov" id="m-gelato" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m-gelato-title" onclick="closeModalOv(event,'m-gelato')">
+  <div class="modal-box"><button type="button" class="m-close" aria-label="Dialog schließen" onclick="closeModal('m-gelato')">✕</button>
+    <div class="m-hero"><img src="/assets/img/img-58-59384cb30a9e.webp" width="1000" height="1000" loading="lazy" decoding="async" alt="Gelato"/><div class="m-hero-ov"></div></div>
     <div class="m-body">
-      <p class="m-label">Signature · La Gelateria de Roses</p><h2 class="m-title">Gelato Artigianale</h2>
+      <p class="m-label">Signature · La Gelateria de Roses</p><h2 class="m-title" id="m-gelato-title">Gelato Artigianale</h2>
       <p class="m-desc">Über 50 Sorten, jeden Tag frisch mit ausgewählten Zutaten zubereitet. Ohne künstliche Farbstoffe.</p>
       <p class="m-sec">🔍 Finden Sie Ihre Sorte</p>
-      <input class="fl-search" type="text" placeholder="Sorte eingeben..." oninput="filterFlavors(this.value)" id="fSearch"/>
+      <input class="fl-search" type="text" aria-label="Sorte suchen" placeholder="Sorte eingeben..." oninput="filterFlavors(this.value)" id="fSearch"/>
       <div class="fgrid" id="fGrid">
         <div class="fc">🌿 Pistazie</div><div class="fc">🍫 Schokolade</div><div class="fc">🍓 Erdbeere</div><div class="fc">🍦 Vanille</div><div class="fc">🥭 Mango</div><div class="fc">⚡ Stracciatella</div><div class="fc">🍋 Zitrone</div><div class="fc">🫐 Himbeere</div><div class="fc">🍮 Dulce de Leche</div><div class="fc">🌰 Haselnuss</div><div class="fc">🔥 Crema Catalana</div><div class="fc">🧂 Salzkaramell</div><div class="fc">🧁 Cheesecake</div><div class="fc">🍯 Turrón</div><div class="fc">🥥 Kokos</div><div class="fc">☕ Kaffee</div><div class="fc">🍉 Wassermelone</div><div class="fc">🍊 Maracuja</div><div class="fc">🥛 Leche Merengada</div><div class="fc">🍦 Sahne</div><div class="fc">🌿 Minze-Schokolade</div><div class="fc">🖤 Lakritz</div><div class="fc">🍫 Brownie</div><div class="fc">⚪ Weiße Schokolade</div><div class="fc">🍒 Amarena</div><div class="fc">💙 Schlumpf</div><div class="fc">🍪 Lotus</div><div class="fc">🥜 Snickers</div><div class="fc">⚫ Oreo</div><div class="fc">🥚 Kinder Ei</div><div class="fc">💜 Veilchen</div><div class="fc">🍫 Kinder Bueno</div><div class="fc">🍈 Melone</div><div class="fc">🥛 Joghurt</div><div class="fc">✨ Dubai-Schokolade</div><div class="fc">🍼 Dolç de Llet</div><div class="fc">🌰 Ferrero</div><div class="fc">💙 Blau</div><div class="fc">🎮 Tutti Frutti</div><div class="fc">🍶 Rum-Rosinen</div>
       </div>
-      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihrem%20Gelato%20🍦" target="_blank" class="m-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
+      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihrem%20Gelato%20🍦" target="_blank" class="m-wa" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
     </div>
   </div>
 </div>
 
-<div class="modal-ov" id="m-crepes" onclick="closeModalOv(event,'m-crepes')">
-  <div class="modal-box"><button class="m-close" onclick="closeModal('m-crepes')">✕</button>
-    <div class="m-hero"><img src="/assets/img/img-56-938fdc09e565.webp" alt="Crêpes"/><div class="m-hero-ov"></div></div>
+<div class="modal-ov" id="m-crepes" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m-crepes-title" onclick="closeModalOv(event,'m-crepes')">
+  <div class="modal-box"><button type="button" class="m-close" aria-label="Dialog schließen" onclick="closeModal('m-crepes')">✕</button>
+    <div class="m-hero"><img src="/assets/img/img-56-938fdc09e565.webp" width="1000" height="1334" loading="lazy" decoding="async" alt="Crêpes"/><div class="m-hero-ov"></div></div>
     <div class="m-body">
-      <p class="m-label">Bestseller · La Gelateria de Roses</p><h2 class="m-title">Crêpes</h2>
+      <p class="m-label">Bestseller · La Gelateria de Roses</p><h2 class="m-title" id="m-crepes-title">Crêpes</h2>
       <p class="m-desc">Handwerklich, unwiderstehlich und immer frisch. Leichter, zarter Teig, frisch auf Bestellung zubereitet.</p>
       <p class="m-sec">Bases Premium</p>
       <div class="tgrid"><div class="ti"><span>🍫</span>Nutella</div><div class="ti"><span>🍫</span>Kinder</div><div class="ti"><span>⚫</span>Oreo</div><div class="ti"><span>🍪</span>Lotus</div><div class="ti"><span>✨</span>Dubai Chocolate</div></div>
       <p class="m-sec">Toppings</p>
       <div class="tgrid"><div class="ti"><span>🍫</span>Schokolade</div><div class="ti"><span>⚪</span>Weiße Schokolade</div><div class="ti"><span>🍬</span>Zucker</div><div class="ti"><span>🍼</span>Dolç de Llet</div><div class="ti"><span>🍯</span>Karamell</div><div class="ti"><span>🍦</span>Sahne</div><div class="ti"><span>🌿</span>Zimt</div></div>
-      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Crêpes%20🥞" target="_blank" class="m-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
+      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Crêpes%20🥞" target="_blank" class="m-wa" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
     </div>
   </div>
 </div>
 
-<div class="modal-ov" id="m-waffles" onclick="closeModalOv(event,'m-waffles')">
-  <div class="modal-box"><button class="m-close" onclick="closeModal('m-waffles')">✕</button>
-    <div class="m-hero"><img src="/assets/img/img-57-440a9eba60c4.webp" alt="Waffeln"/><div class="m-hero-ov"></div></div>
+<div class="modal-ov" id="m-waffles" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m-waffles-title" onclick="closeModalOv(event,'m-waffles')">
+  <div class="modal-box"><button type="button" class="m-close" aria-label="Dialog schließen" onclick="closeModal('m-waffles')">✕</button>
+    <div class="m-hero"><img src="/assets/img/img-57-440a9eba60c4.webp" width="1000" height="1000" loading="lazy" decoding="async" alt="Waffeln"/><div class="m-hero-ov"></div></div>
     <div class="m-body">
-      <p class="m-label">La Gelateria de Roses</p><h2 class="m-title">Waffeln</h2>
+      <p class="m-label">La Gelateria de Roses</p><h2 class="m-title" id="m-waffles-title">Waffeln</h2>
       <p class="m-desc">Handwerklich, unwiderstehlich und frisch zubereitet. Außen knusprig, innen weich.</p>
       <p class="m-sec">Bases Premium</p>
       <div class="tgrid"><div class="ti"><span>🍫</span>Nutella</div><div class="ti"><span>🍫</span>Kinder</div><div class="ti"><span>⚫</span>Oreo</div><div class="ti"><span>🍪</span>Lotus</div><div class="ti"><span>✨</span>Dubai Chocolate</div></div>
       <p class="m-sec">Toppings</p>
       <div class="tgrid"><div class="ti"><span>🍫</span>Schokolade</div><div class="ti"><span>⚪</span>Weiße Schokolade</div><div class="ti"><span>🍬</span>Zucker</div><div class="ti"><span>🍼</span>Dolç de Llet</div><div class="ti"><span>🍯</span>Karamell</div><div class="ti"><span>🍦</span>Sahne</div><div class="ti"><span>🌿</span>Zimt</div></div>
-      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Waffeln%20🧇" target="_blank" class="m-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
+      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Waffeln%20🧇" target="_blank" class="m-wa" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
     </div>
   </div>
 </div>
 
-<div class="modal-ov" id="m-milkshakes" onclick="closeModalOv(event,'m-milkshakes')">
-  <div class="modal-box"><button class="m-close" onclick="closeModal('m-milkshakes')">✕</button>
-    <div class="m-hero"><img src="/assets/img/img-45-7672aefed0f2.webp" alt="Milkshakes"/><div class="m-hero-ov"></div></div>
+<div class="modal-ov" id="m-milkshakes" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m-milkshakes-title" onclick="closeModalOv(event,'m-milkshakes')">
+  <div class="modal-box"><button type="button" class="m-close" aria-label="Dialog schließen" onclick="closeModal('m-milkshakes')">✕</button>
+    <div class="m-hero"><img src="/assets/img/img-45-7672aefed0f2.webp" width="1000" height="599" loading="lazy" decoding="async" alt="Milkshakes"/><div class="m-hero-ov"></div></div>
     <div class="m-body">
-      <p class="m-label">La Gelateria de Roses</p><h2 class="m-title">Milkshakes</h2>
+      <p class="m-label">La Gelateria de Roses</p><h2 class="m-title" id="m-milkshakes-title">Milkshakes</h2>
       <p class="m-desc">Cremig, unwiderstehlich und voller Geschmack. Wählen Sie Ihren Favoriten und genießen Sie jeden Schluck.</p>
       <p class="m-sec">Verfügbare Sorten</p>
       <div class="tgrid"><div class="ti"><span>⚫</span>Oreo</div><div class="ti"><span>🍫</span>Schokolade</div><div class="ti"><span>🍓</span>Erdbeere</div><div class="ti"><span>🌿</span>Pistazie</div><div class="ti"><span>🍪</span>Lotus</div><div class="ti"><span>🍦</span>Vanille</div></div>
       <p class="m-sec">Wie funktioniert es?</p>
       <div class="cbox"><h4>🍦 2 Kugeln handwerkliches Gelato</h4><p>Wählen Sie eine beliebige Kombination aus unserer Vitrine mit +50 Sorten. Unendliche Möglichkeiten!</p></div>
       <div class="cbox"><h4>🥛 Frische Vollmilch</h4><p>Wir mixen Ihr Gelato mit frischer Milch zu einer unwiderstehlich cremigen Textur.</p></div>
-      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Milkshakes%20🥤" target="_blank" class="m-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
+      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Milkshakes%20🥤" target="_blank" class="m-wa" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
     </div>
   </div>
 </div>
 
-<div class="modal-ov" id="m-smoothies" onclick="closeModalOv(event,'m-smoothies')">
-  <div class="modal-box"><button class="m-close" onclick="closeModal('m-smoothies')">✕</button>
-    <div class="m-hero"><img src="/assets/img/img-46-da0bf81fb90e.webp" alt="Smoothies"/><div class="m-hero-ov"></div></div>
+<div class="modal-ov" id="m-smoothies" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m-smoothies-title" onclick="closeModalOv(event,'m-smoothies')">
+  <div class="modal-box"><button type="button" class="m-close" aria-label="Dialog schließen" onclick="closeModal('m-smoothies')">✕</button>
+    <div class="m-hero"><img src="/assets/img/img-46-da0bf81fb90e.webp" width="999" height="600" loading="lazy" decoding="async" alt="Smoothies"/><div class="m-hero-ov"></div></div>
     <div class="m-body">
-      <p class="m-label">La Gelateria de Roses</p><h2 class="m-title">Smoothies</h2>
+      <p class="m-label">La Gelateria de Roses</p><h2 class="m-title" id="m-smoothies-title">Smoothies</h2>
       <p class="m-desc">Natürlich, unwiderstehlich und voller Energie. Echte Früchte, authentischer Geschmack, pures Wohlbefinden.</p>
       <p class="m-sec">Verfügbare Sorten</p>
       <div class="tgrid"><div class="ti"><span>🥭</span>Mango</div><div class="ti"><span>🍓</span>Erdbeere</div><div class="ti"><span>🍋</span>Zitrone</div><div class="ti"><span>🍊</span>Maracuja</div><div class="ti"><span>🍈</span>Melone</div><div class="ti"><span>🍉</span>Wassermelone</div><div class="ti"><span>🥥</span>Kokos</div></div>
       <div class="cbox" style="margin-top:1.5rem"><h4>🌿 100% Natürlich</h4><p>Handwerkliches Frucht-Gelato mit frischem Wasser gemixt. Ohne zugesetzten Zucker, ohne Konservierungsstoffe.</p></div>
-      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Smoothies%20🍓" target="_blank" class="m-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
+      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Smoothies%20🍓" target="_blank" class="m-wa" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
     </div>
   </div>
 </div>
 
-<div class="modal-ov" id="m-granizados" onclick="closeModalOv(event,'m-granizados')">
-  <div class="modal-box"><button class="m-close" onclick="closeModal('m-granizados')">✕</button>
-    <div class="m-hero"><img src="/assets/img/img-59-62ebd311c98f.webp" alt="Granitas"/><div class="m-hero-ov"></div></div>
+<div class="modal-ov" id="m-granizados" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="m-granizados-title" onclick="closeModalOv(event,'m-granizados')">
+  <div class="modal-box"><button type="button" class="m-close" aria-label="Dialog schließen" onclick="closeModal('m-granizados')">✕</button>
+    <div class="m-hero"><img src="/assets/img/img-59-62ebd311c98f.webp" width="1000" height="1000" loading="lazy" decoding="async" alt="Granitas"/><div class="m-hero-ov"></div></div>
     <div class="m-body">
-      <p class="m-label">Sommer · La Gelateria de Roses</p><h2 class="m-title">Granitas</h2>
+      <p class="m-label">Sommer · La Gelateria de Roses</p><h2 class="m-title" id="m-granizados-title">Granitas</h2>
       <p class="m-desc">Erfrischend, natürlich und voller Geschmack. Das perfekte Gegenmittel gegen die Mittelmeerhitze.</p>
       <p class="m-sec">Unsere Sorten</p>
       <div class="ggrid">
         <div class="gc"><span class="ge">🍋</span>Zitrone</div><div class="gc"><span class="ge">🍓</span>Erdbeere</div><div class="gc"><span class="ge">🥤</span>Coca-Cola</div><div class="gc"><span class="ge">🥭</span>Mango</div><div class="gc"><span class="ge">💙</span>Tropischer Schlumpf</div>
       </div>
-      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Granitas%20🧊" target="_blank" class="m-wa"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
+      <a href="https://wa.me/34647319686?text=Hallo!%20Ich%20hätte%20gern%20Informationen%20zu%20Ihren%20Granitas%20🧊" target="_blank" class="m-wa" rel="noopener noreferrer"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>Fragen Sie uns auf WhatsApp</a>
     </div>
   </div>
 </div>
@@ -1009,33 +994,40 @@ function setLang(l){
   document.documentElement.lang=l;
 }
 
-// El loader no espera a window.load (~50 imágenes) y termina en display:none,
-// porque en pestañas ocultas la transición CSS no avanza y el overlay bloquearía la página.
-function hideLoader(){const ld=document.getElementById('loader');if(ld){ld.classList.add('hide');setTimeout(()=>ld.style.display='none',1000)}}
-setTimeout(hideLoader,1900);
-
-window.addEventListener('load',()=>{
-  const siteLang=document.documentElement.getAttribute('data-site-lang')||'es';
-  setLang(i18n[siteLang]?siteLang:'es');
-  initCarousel();
-});
+const siteLang=document.documentElement.getAttribute('data-site-lang')||'es';
+setLang(i18n[siteLang]?siteLang:'es');
+window.addEventListener('load',initCarousel);
 
 const navbar=document.getElementById('navbar');
 window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>50),{passive:true});
-function openMenu(){document.getElementById('mobMenu').classList.add('open');document.body.style.overflow='hidden'}
-function closeMenu(){document.getElementById('mobMenu').classList.remove('open');document.body.style.overflow=''}
+let lastFocus=null;
+function openMenu(){const menu=document.getElementById('mobMenu');const trigger=document.getElementById('navMenuButton');lastFocus=document.activeElement;menu.classList.add('open');menu.setAttribute('aria-hidden','false');trigger.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';menu.querySelector('.mob-close').focus()}
+function closeMenu(){const menu=document.getElementById('mobMenu');const trigger=document.getElementById('navMenuButton');menu.classList.remove('open');menu.setAttribute('aria-hidden','true');trigger.setAttribute('aria-expanded','false');document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
 
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 const revEls=document.querySelectorAll('.reveal');
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});
-revEls.forEach(el=>obs.observe(el));
+if('IntersectionObserver' in window&&!reduceMotion.matches){
+  document.documentElement.classList.add('reveal-ready');
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:.1});
+  revEls.forEach(el=>obs.observe(el));
+}
 
 const heroBg=document.getElementById('heroBg');
-window.addEventListener('scroll',()=>{if(heroBg)heroBg.style.transform=`translateY(${window.scrollY*.35}px)`},{passive:true});
-document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}});});
+if(!reduceMotion.matches)window.addEventListener('scroll',()=>{if(heroBg)heroBg.style.transform=`translateY(${window.scrollY*.35}px)`},{passive:true});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const hash=a.getAttribute('href');if(!hash||hash.length<2)return;const t=document.querySelector(hash);if(t){e.preventDefault();t.scrollIntoView({behavior:reduceMotion.matches?'auto':'smooth',block:'start'})}});});
 
-function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden'}
-function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow=''}
+function openModal(id){const modal=document.getElementById(id);lastFocus=document.activeElement;modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';requestAnimationFrame(()=>modal.querySelector('.m-close').focus())}
+function closeModal(id){const modal=document.getElementById(id);modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
 function closeModalOv(e,id){if(e.target===document.getElementById(id))closeModal(id)}
+function handleCardKey(e,id){if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal(id)}}
+document.addEventListener('keydown',e=>{
+  const active=document.querySelector('.modal-ov.open, #mobMenu.open');
+  if(e.key==='Escape'){const modal=document.querySelector('.modal-ov.open');if(modal)closeModal(modal.id);else if(document.getElementById('mobMenu').classList.contains('open'))closeMenu();return}
+  if(e.key!=='Tab'||!active)return;
+  const focusable=[...active.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),[tabindex="0"]')].filter(el=>el.offsetParent!==null);
+  if(!focusable.length)return;const first=focusable[0],last=focusable[focusable.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+});
 function filterFlavors(v){const q=v.toLowerCase();document.querySelectorAll('#fGrid .fc').forEach(c=>c.classList.toggle('hidden',!c.textContent.toLowerCase().includes(q)))}
 
 // CAROUSEL
@@ -1057,7 +1049,7 @@ function initCarousel(){
   }
   startAuto();
 }
-function startAuto(){flAuto=setInterval(flNext,3500)}
+function startAuto(){if(!reduceMotion.matches)flAuto=setInterval(flNext,3500)}
 function stopAuto(){clearInterval(flAuto)}
 function updateDots(){
   const pages=Math.ceil(flTotal/4);
