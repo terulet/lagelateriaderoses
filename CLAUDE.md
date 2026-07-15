@@ -140,8 +140,7 @@ Google Reviews (escribir): https://g.page/r/CaVSamGk-7L3EBM/review
 WhatsApp:            https://wa.me/34647319686
 Teléfono:            tel:+34972253795
 Instagram:           https://instagram.com/lagelateriaderoses
-Facebook:            https://facebook.com/lagelateriaderoses
-TripAdvisor:         https://www.tripadvisor.com/Restaurant_Review-g262060-d10093926
+Facebook:            https://www.facebook.com/lagelateriaderoses
 ```
 
 ---
