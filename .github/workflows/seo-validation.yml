@@ -22,7 +22,9 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
-      - name: Validate internal SEO architecture
+      - name: Validate SEO architecture and factual contracts
         run: node .github/scripts/validate-internal-architecture.mjs .
+      - name: Test factual contract mutations
+        run: node .github/scripts/test-factual-contracts.mjs
       - name: Test production monitor
         run: node .github/scripts/test-monitor-production-seo.mjs
