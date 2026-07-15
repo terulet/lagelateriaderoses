@@ -180,6 +180,24 @@ TripAdvisor:         https://www.tripadvisor.com/Restaurant_Review-g262060-d1009
 
 ---
 
+## Herramienta interna: Control de Stock (`/stock/`)
+
+Utilidad de trabajo (PWA) para el personal, **independiente de la web pública** y con
+`noindex`. Vive en `/stock/` y NO está sujeta a la regla de los 6 idiomas (es solo ES).
+Sigue las reglas del proyecto: HTML/CSS/JS plano, sin frameworks ni build, GitHub Pages.
+
+- `stock/index.html` — UI (CSS+JS inline). En iPad apaisado se muestran **3 columnas**.
+- `stock/stock-engine.js` — motor de actualización optimista + cola por artículo
+  (agnóstico al backend; hoy persiste en `localStorage`). Compartido navegador/Node.
+- `stock/catalog.js` — 35 sabores + 6 productos con categorías.
+- `stock/sw.js` + `stock/manifest.webmanifest` — PWA; `sw.js` es network-first. **Al
+  desplegar cambios, subir `CACHE_VERSION` en `sw.js` y `BUILD` en `index.html`.**
+- `stock/test/` — pruebas (`node --test stock/test/engine.test.js` y `visual.mjs` con Playwright).
+
+Detalles completos en `stock/README.md`. No incluir este bloque en la web ni enlazarlo público.
+
+---
+
 ## Flujo de edición habitual
 
 1. Editar `index.html` (ES) con el cambio.
