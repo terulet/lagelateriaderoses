@@ -427,8 +427,39 @@ if (!fs.existsSync(workflowFile)) {
     'persist-credentials: false',
     'timeout-minutes: 5',
     'node .github/scripts/validate-internal-architecture.mjs .',
+    'node .github/scripts/test-monitor-production-seo.mjs',
   ]) {
     if (!workflow.includes(marker)) fail(`workflow SEO: falta ${marker}`);
+  }
+}
+
+for (const script of [
+  '.github/scripts/monitor-production-seo.mjs',
+  '.github/scripts/test-monitor-production-seo.mjs',
+]) {
+  if (!fs.existsSync(path.join(root, script))) fail(`falta ${script}`);
+}
+
+const productionWorkflowFile = path.join(root, '.github/workflows/seo-production-monitor.yml');
+if (!fs.existsSync(productionWorkflowFile)) {
+  fail('falta el workflow de monitorización de producción');
+} else {
+  const workflow = fs.readFileSync(productionWorkflowFile, 'utf8');
+  for (const marker of [
+    'workflow_dispatch:',
+    'schedule:',
+    "cron: '17 5 * * 1'",
+    'contents: read',
+    'cancel-in-progress: false',
+    'timeout-minutes: 10',
+    'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0',
+    'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0',
+    'node-version: 24',
+    'persist-credentials: false',
+    'node .github/scripts/test-monitor-production-seo.mjs',
+    'node .github/scripts/monitor-production-seo.mjs .',
+  ]) {
+    if (!workflow.includes(marker)) fail(`workflow de producción: falta ${marker}`);
   }
 }
 
@@ -437,4 +468,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404 and CI from every language home; P9 French intent contracts, H1, metadata, social cards, canonical, hreflang, sitemap, JSON-LD, links and fragments are consistent.');
+console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404 and CI from every language home; P11 adds a scheduled production monitor while P9 French intent contracts, H1, metadata, social cards, canonical, hreflang, sitemap, JSON-LD, links and fragments remain consistent.');
