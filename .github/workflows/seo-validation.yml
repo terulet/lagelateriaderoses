@@ -26,5 +26,9 @@ jobs:
         run: node .github/scripts/validate-internal-architecture.mjs .
       - name: Test factual contract mutations
         run: node .github/scripts/test-factual-contracts.mjs
+      - name: Validate static performance budgets
+        run: node .github/scripts/performance-budget.mjs .
+      - name: Test performance budget mutations
+        run: node .github/scripts/test-performance-budget.mjs
       - name: Test production monitor
         run: node .github/scripts/test-monitor-production-seo.mjs

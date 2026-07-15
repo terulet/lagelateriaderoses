@@ -6,6 +6,7 @@ const root = path.resolve(process.argv[2] || '.');
 const origin = 'https://lagelateriaderoses.com';
 const sitemapUrl = `${origin}/sitemap.xml`;
 const businessId = `${origin}/#business`;
+const websiteId = `${origin}/#website`;
 const businessStreetAddress = 'Carrer Dr. Pi i Sunyer, 6';
 const businessPhone = '+34972253795';
 const businessEmail = 'info@lagelateriaderoses.com';
@@ -14,10 +15,9 @@ const businessProfiles = [
   'https://www.instagram.com/lagelateriaderoses/',
   'https://www.facebook.com/lagelateriaderoses',
 ];
-const businessDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const businessKeys = [
   '@context', '@id', '@type', 'address', 'email', 'geo', 'hasMap', 'name',
-  'openingHoursSpecification', 'sameAs', 'telephone', 'url',
+  'sameAs', 'telephone', 'url',
 ].sort();
 const dailyWorkshopCopy = new Map([
   ['es', 'Elaboramos nuestro gelato cada día en el obrador visible desde la tienda.'],
@@ -61,6 +61,7 @@ const utilityFiles = ['404.html'];
 
 const homes = ['/', '/ca/', '/en/', '/fr/', '/de/', '/nl/'];
 const guides = [...routes.keys()].filter(route => route.startsWith('/fr/') && route !== '/fr/');
+const informationalGuides = new Set(['/fr/meilleures-plages-roses/', '/fr/que-faire-a-roses/']);
 const expectedHreflang = new Map([
   ['es', `${origin}/`],
   ['ca', `${origin}/ca/`],
@@ -124,6 +125,7 @@ function validateStructuredData(value, route, trail = 'jsonld') {
     .map(type => String(type).split('/').pop());
   for (const type of types) {
     if (['Review', 'AggregateRating'].includes(type)) fail(`${route}: tipo estructurado autocontrolado ${type} en ${trail}`);
+    if (type === 'FAQPage') fail(`${route}: tipo estructurado retirado FAQPage en ${trail}`);
   }
   for (const [key, child] of Object.entries(value)) {
     if (['review', 'aggregateRating', 'ratingValue', 'reviewCount', 'bestRating', 'worstRating'].includes(key)) {
@@ -178,6 +180,7 @@ for (const relative of [...actualFiles, 'CLAUDE.md']) {
   const content = fs.readFileSync(filename, 'utf8');
   if (/gelateriafeelingdor/i.test(content)) fail(`${relative}: identidad antigua de Facebook detectada`);
   if (content.includes('https://facebook.com/lagelateriaderoses')) fail(`${relative}: Facebook oficial sin forma canónica www`);
+  if (content.includes('https://instagram.com/lagelateriaderoses')) fail(`${relative}: Instagram oficial sin forma canónica www y barra final`);
 }
 
 const documents = new Map();
@@ -272,10 +275,23 @@ for (const [route, relative] of routes) {
   const typeCount = type => entities.filter(entity => entity?.['@type'] === type).length;
   const webPage = entities.find(entity => entity?.['@type'] === 'WebPage');
   if (typeCount('WebPage') !== 1) fail(`${route}: WebPage count ${typeCount('WebPage')}`);
+  if (webPage?.['@id'] !== `${expectedCanonical}#webpage`) fail(`${route}: WebPage.@id incorrecto`);
   if (webPage?.url !== expectedCanonical) fail(`${route}: WebPage.url incorrecta`);
   if (webPage?.name !== title) fail(`${route}: WebPage.name no coincide con title`);
   if (webPage?.description !== description) fail(`${route}: WebPage.description no coincide con meta description`);
-  if (webPage?.about?.['@id'] !== businessId) fail(`${route}: WebPage.about incorrecto`);
+  if (informationalGuides.has(route)) {
+    if ('about' in (webPage || {})) fail(`${route}: WebPage.about no debe convertir la guía informativa en página del negocio`);
+  } else if (webPage?.about?.['@id'] !== businessId) {
+    fail(`${route}: WebPage.about incorrecto`);
+  }
+  if (
+    webPage?.isPartOf?.['@type'] !== 'WebSite' ||
+    webPage?.isPartOf?.['@id'] !== websiteId ||
+    webPage?.isPartOf?.name !== 'La Gelateria de Roses' ||
+    webPage?.isPartOf?.url !== `${origin}/`
+  ) {
+    fail(`${route}: WebPage.isPartOf no identifica el WebSite canónico`);
+  }
   const expectedLanguage = route === '/' ? 'es' : route.split('/')[1];
   if (webPage?.inLanguage !== expectedLanguage) fail(`${route}: WebPage.inLanguage ${webPage?.inLanguage} != ${expectedLanguage}`);
 
@@ -301,6 +317,10 @@ for (const [route, relative] of routes) {
     for (const staleFacebook of ['https://www.facebook.com/gelateriafeelingdor', 'https://facebook.com/lagelateriaderoses']) {
       if (html.includes(staleFacebook)) fail(`${route}: perfil de Facebook obsoleto o no canónico ${staleFacebook}`);
     }
+
+    const officialInstagram = businessProfiles[0];
+    if (count(html, officialInstagram) !== 3) fail(`${route}: Instagram oficial debe aparecer una vez en Schema y dos veces como enlace visible`);
+    if (count(html, `href="${officialInstagram}"`) !== 2) fail(`${route}: enlaces visibles de Instagram oficial ausentes o duplicados`);
 
     const expectedLanguage = route === '/' ? 'es' : route.split('/')[1];
     const approvedWorkshopCopy = dailyWorkshopCopy.get(expectedLanguage);
@@ -330,17 +350,7 @@ for (const [route, relative] of routes) {
     const reviewLinks = [...html.matchAll(/href=["'](https:\/\/g\.page\/r\/[^"']+)["']/gi)].map(match => match[1]);
     if (JSON.stringify(reviewLinks.sort()) !== JSON.stringify(['https://g.page/r/CaVSamGk-7L3EBM', 'https://g.page/r/CaVSamGk-7L3EBM/review'].sort())) fail(`${route}: enlaces Google de reseñas fuera de la lista permitida`);
 
-    const openingHours = business?.openingHoursSpecification;
-    if (
-      !openingHours ||
-      Array.isArray(openingHours) ||
-      openingHours?.['@type'] !== 'OpeningHoursSpecification' ||
-      JSON.stringify(openingHours?.dayOfWeek) !== JSON.stringify(businessDays) ||
-      openingHours?.opens !== '10:00' ||
-      openingHours?.closes !== '01:30'
-    ) {
-      fail(`${route}: el horario estructurado de verano debe ser 10:00-01:30 todos los días`);
-    }
+    if ('openingHoursSpecification' in (business || {})) fail(`${route}: horario estacional sin fechas publicado como horario anual`);
 
     for (const marker of [
       '<span class="stat-num">4.8★</span>',
@@ -355,7 +365,8 @@ for (const [route, relative] of routes) {
     }
   } else {
     if (typeCount('BreadcrumbList') !== 1) fail(`${route}: BreadcrumbList count ${typeCount('BreadcrumbList')}`);
-    if (typeCount('FAQPage') !== 1) fail(`${route}: FAQPage count ${typeCount('FAQPage')}`);
+    if (typeCount('FAQPage') !== 0) fail(`${route}: FAQPage retirado por Google debe permanecer ausente`);
+    if (count(html, '<details>') !== 4) fail(`${route}: las cuatro preguntas visibles deben conservarse sin FAQPage`);
     const breadcrumb = entities.find(entity => entity?.['@type'] === 'BreadcrumbList');
     const items = breadcrumb?.itemListElement || [];
     if (items.length !== 2 || items[0]?.position !== 1 || items[0]?.item !== `${origin}/fr/` || items[1]?.position !== 2 || items[1]?.item !== expectedCanonical) {
@@ -530,6 +541,8 @@ if (!fs.existsSync(workflowFile)) {
     'timeout-minutes: 5',
     'node .github/scripts/validate-internal-architecture.mjs .',
     'node .github/scripts/test-factual-contracts.mjs',
+    'node .github/scripts/performance-budget.mjs .',
+    'node .github/scripts/test-performance-budget.mjs',
     'node .github/scripts/test-monitor-production-seo.mjs',
   ]) {
     if (!workflow.includes(marker)) fail(`workflow SEO: falta ${marker}`);
@@ -539,6 +552,8 @@ if (!fs.existsSync(workflowFile)) {
 for (const script of [
   '.github/scripts/factual-contracts.mjs',
   '.github/scripts/test-factual-contracts.mjs',
+  '.github/scripts/performance-budget.mjs',
+  '.github/scripts/test-performance-budget.mjs',
   '.github/scripts/monitor-production-seo.mjs',
   '.github/scripts/test-monitor-production-seo.mjs',
 ]) {
@@ -573,4 +588,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404 and CI from every language home; P12 enforces factual multilingual copy, official social identity and Google review attribution while P11 monitoring and P9 French intent contracts remain consistent.');
+console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404; P13 enforces seasonal Schema accuracy, canonical identity and static performance budgets while P12 factual, P11 production and P9 French intent contracts remain consistent.');
