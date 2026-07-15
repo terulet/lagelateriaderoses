@@ -5,6 +5,13 @@ const root = path.resolve(process.argv[2] || '.');
 const origin = 'https://lagelateriaderoses.com';
 const sitemapUrl = `${origin}/sitemap.xml`;
 const businessId = `${origin}/#business`;
+const businessStreetAddress = 'Carrer Dr. Pi i Sunyer, 6';
+const businessPhone = '+34972253795';
+const businessProfiles = [
+  'https://www.instagram.com/lagelateriaderoses/',
+  'https://www.facebook.com/gelateriafeelingdor',
+];
+const businessDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 const routes = new Map([
   ['/', 'index.html'],
@@ -98,6 +105,11 @@ for (const [route, relative] of routes) {
   const html = fs.readFileSync(filename, 'utf8');
   documents.set(route, html);
 
+  if (!html.includes(businessStreetAddress)) fail(`${route}: falta la dirección comercial verificada`);
+  for (const staleAddress of ['Carrer Pi i Sunyer 6', 'Carrer Pi i Sunyer, 6', 'Carrer%20Pi%20i%20Sunyer', 'Carrer+Pi+i+Sunyer']) {
+    if (html.includes(staleAddress)) fail(`${route}: dirección comercial obsoleta ${staleAddress}`);
+  }
+
   const ids = [...html.matchAll(/\bid=["']([^"']+)["']/gi)].map(match => match[1]);
   const duplicateIds = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
   if (duplicateIds.length) fail(`${route}: IDs duplicados ${duplicateIds.join(', ')}`);
@@ -154,6 +166,35 @@ for (const [route, relative] of routes) {
 
   if (homes.includes(route)) {
     if (typeCount('IceCreamShop') !== 1) fail(`${route}: IceCreamShop count ${typeCount('IceCreamShop')}`);
+    const business = entities.find(entity => entity?.['@type'] === 'IceCreamShop');
+    if (business?.telephone !== businessPhone) fail(`${route}: teléfono del negocio incorrecto`);
+    if (business?.address?.streetAddress !== businessStreetAddress) fail(`${route}: dirección del negocio incorrecta`);
+    if (business && Object.hasOwn(business, 'aggregateRating')) fail(`${route}: aggregateRating autocontrolado no debe publicarse`);
+    if (JSON.stringify(business?.sameAs) !== JSON.stringify(businessProfiles)) fail(`${route}: perfiles sociales del negocio incorrectos`);
+
+    const openingHours = business?.openingHoursSpecification;
+    if (
+      !openingHours ||
+      Array.isArray(openingHours) ||
+      openingHours?.['@type'] !== 'OpeningHoursSpecification' ||
+      JSON.stringify(openingHours?.dayOfWeek) !== JSON.stringify(businessDays) ||
+      openingHours?.opens !== '11:00' ||
+      openingHours?.closes !== '00:00'
+    ) {
+      fail(`${route}: horario estructurado debe ser 11:00-00:00 todos los días`);
+    }
+
+    for (const marker of [
+      '<span class="stat-num">4.8★</span>',
+      '<span class="stat-num">+800</span>',
+      '<p class="loc-addr">Carrer Dr. Pi i Sunyer, 6</p>',
+      '<span>11:00 – 00:00</span>',
+    ]) {
+      if (count(html, marker) !== 1) fail(`${route}: dato público ausente o duplicado ${marker}`);
+    }
+    for (const staleFact of ['4.9★', '+650', '+600 ', 'reviewCount', '10:30 –', '11:00 – 23:00', 'Google y TripAdvisor', 'Google i TripAdvisor', 'Google and TripAdvisor', 'Google et TripAdvisor', 'Google en TripAdvisor', 'Google und TripAdvisor']) {
+      if (html.includes(staleFact)) fail(`${route}: dato público obsoleto ${staleFact}`);
+    }
   } else {
     if (typeCount('BreadcrumbList') !== 1) fail(`${route}: BreadcrumbList count ${typeCount('BreadcrumbList')}`);
     if (typeCount('FAQPage') !== 1) fail(`${route}: FAQPage count ${typeCount('FAQPage')}`);
