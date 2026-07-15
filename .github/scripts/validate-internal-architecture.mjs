@@ -38,6 +38,36 @@ const expectedHreflang = new Map([
   ['nl', `${origin}/nl/`],
   ['x-default', `${origin}/`],
 ]);
+const frenchIntentContracts = new Map([
+  ['/fr/', {
+    title: 'La Gelateria de Roses | Gelato italien au centre-ville',
+    description: 'Découvrez La Gelateria de Roses : gelato italien, sorbets, crêpes et gaufres au centre-ville. Retrouvez notre adresse, nos horaires et les avis Google.',
+    h1: 'La Gelateria de Roses : gelato italien au cœur de la ville',
+  }],
+  ['/fr/glacier-roses/', {
+    title: 'Glacier à Roses : parfums, horaires et adresse',
+    description: 'Trouvez un glacier à Roses au centre-ville : gelato, sorbets, crêpes et gaufres. Consultez l’adresse, les horaires et l’itinéraire Google Maps.',
+    h1: 'Glacier à Roses : que déguster et comment nous trouver ?',
+  }],
+  ['/fr/meilleur-glacier-roses/', {
+    title: 'Meilleur glacier à Roses : comment choisir ? | La Gelateria',
+    description: 'Quels critères regarder pour choisir un glacier à Roses ? Qualité, choix, emplacement et avis Google : découvrez l’approche de La Gelateria de Roses.',
+    h1: 'Comment choisir le meilleur glacier à Roses ?',
+  }],
+]);
+const allowedFrenchIntentAnchors = new Map([
+  ['/fr/glacier-roses/', new Set([
+    'Glacier à Roses : parfums et informations pratiques',
+    'Parfums et informations',
+    'Glacier à Roses : guide pratique',
+  ])],
+  ['/fr/meilleur-glacier-roses/', new Set([
+    'Comment choisir le meilleur glacier à Roses ?',
+    'Guide de choix',
+    'Comment choisir un bon glacier',
+    'Quels critères pour choisir un bon glacier ?',
+  ])],
+]);
 
 const errors = [];
 const fail = message => errors.push(message);
@@ -48,6 +78,9 @@ const decodeEntities = text => text
   .replaceAll('&#39;', "'")
   .replaceAll('&lt;', '<')
   .replaceAll('&gt;', '>');
+const visibleText = text => decodeEntities(text.replace(/<[^>]+>/g, ' '))
+  .replace(/\s+/g, ' ')
+  .trim();
 
 function walkHtml(directory, prefix = '') {
   const output = [];
@@ -93,8 +126,10 @@ const documents = new Map();
 const canonicals = new Set();
 const titles = new Set();
 const descriptions = new Set();
+const headings = new Set();
 const graph = new Map();
 const directLinks = new Map();
+const contextualLinks = [];
 
 for (const [route, relative] of routes) {
   const filename = path.join(root, relative);
@@ -116,18 +151,39 @@ for (const [route, relative] of routes) {
 
   const titleMatches = [...html.matchAll(/<title>([^<]+)<\/title>/gi)];
   const descriptionMatches = [...html.matchAll(/<meta\s+name=["']description["']\s+content=["']([^"']+)["'][^>]*>/gi)];
+  const h1Matches = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)];
   if (titleMatches.length !== 1) fail(`${route}: title count ${titleMatches.length}`);
   if (descriptionMatches.length !== 1) fail(`${route}: description count ${descriptionMatches.length}`);
+  if (h1Matches.length !== 1) fail(`${route}: H1 count ${h1Matches.length}`);
   const title = decodeEntities(titleMatches[0]?.[1] || '');
   const description = decodeEntities(descriptionMatches[0]?.[1] || '');
+  const h1 = visibleText(h1Matches[0]?.[1] || '');
   if (title.length > 60) fail(`${route}: title de ${title.length} caracteres`);
   if (description.length > 160) fail(`${route}: description de ${description.length} caracteres`);
+  if (!h1) fail(`${route}: H1 vacío`);
   const faviconCount = [...html.matchAll(/<link\s+rel=["']icon["'][^>]*>/gi)].length;
   if (faviconCount !== 1) fail(`${route}: favicon count ${faviconCount}`);
   if (titles.has(title)) fail(`${route}: title duplicado ${title}`);
   if (descriptions.has(description)) fail(`${route}: description duplicada`);
+  if (headings.has(h1)) fail(`${route}: H1 duplicado ${h1}`);
   titles.add(title);
   descriptions.add(description);
+  headings.add(h1);
+
+  const intentContract = frenchIntentContracts.get(route);
+  if (intentContract) {
+    if (title !== intentContract.title) fail(`${route}: title fuera del contrato de intención P9`);
+    if (description !== intentContract.description) fail(`${route}: description fuera del contrato de intención P9`);
+    if (h1 !== intentContract.h1) fail(`${route}: H1 fuera del contrato de intención P9`);
+    for (const marker of [
+      `<meta property="og:title" content="${intentContract.title}"`,
+      `<meta property="og:description" content="${intentContract.description}"`,
+      `<meta name="twitter:title" content="${intentContract.title}"`,
+      `<meta name="twitter:description" content="${intentContract.description}"`,
+    ]) {
+      if (!html.includes(marker)) fail(`${route}: metadato social fuera del contrato P9 ${marker}`);
+    }
+  }
 
   const canonicalMatches = [...html.matchAll(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["'][^>]*>/gi)].map(match => match[1]);
   const expectedCanonical = `${origin}${route}`;
@@ -253,8 +309,41 @@ for (const [route, relative] of routes) {
     targets.add(targetRoute);
     links.push({ targetRoute, nofollow });
   }
+  for (const match of html.matchAll(/<a\b([^>]*?)href=["']([^"']+)["']([^>]*)>([\s\S]*?)<\/a>/gi)) {
+    let url;
+    try {
+      url = new URL(match[2].trim(), `${origin}${route}`);
+    } catch {
+      continue;
+    }
+    if (url.origin !== origin) continue;
+    const targetRoute = normalizeRoute(url.pathname);
+    if (!routes.has(targetRoute)) continue;
+    contextualLinks.push({
+      sourceRoute: route,
+      targetRoute,
+      anchorText: visibleText(match[4]),
+    });
+  }
   graph.set(route, targets);
   directLinks.set(route, links);
+}
+
+for (const link of contextualLinks) {
+  if (!link.sourceRoute.startsWith('/fr/')) continue;
+  if (link.sourceRoute === link.targetRoute) continue;
+  const allowed = allowedFrenchIntentAnchors.get(link.targetRoute);
+  if (allowed && !allowed.has(link.anchorText)) {
+    fail(`${link.sourceRoute}: anchor P9 ambiguo hacia ${link.targetRoute}: ${link.anchorText}`);
+  }
+}
+for (const [targetRoute, expectedAnchor] of [
+  ['/fr/glacier-roses/', 'Glacier à Roses : parfums et informations pratiques'],
+  ['/fr/meilleur-glacier-roses/', 'Comment choisir le meilleur glacier à Roses ?'],
+]) {
+  if (!contextualLinks.some(link => link.sourceRoute === '/fr/' && link.targetRoute === targetRoute && link.anchorText === expectedAnchor)) {
+    fail(`/fr/: falta anchor contextual P9 hacia ${targetRoute}`);
+  }
 }
 
 for (const guide of guides) {
@@ -348,4 +437,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404 and CI from every language home; metadata, social cards, canonical, hreflang, sitemap, JSON-LD, links and fragments are consistent.');
+console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404 and CI from every language home; P9 French intent contracts, H1, metadata, social cards, canonical, hreflang, sitemap, JSON-LD, links and fragments are consistent.');
