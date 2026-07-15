@@ -178,21 +178,21 @@ for (const [route, relative] of routes) {
       Array.isArray(openingHours) ||
       openingHours?.['@type'] !== 'OpeningHoursSpecification' ||
       JSON.stringify(openingHours?.dayOfWeek) !== JSON.stringify(businessDays) ||
-      openingHours?.opens !== '11:00' ||
-      openingHours?.closes !== '00:00'
+      openingHours?.opens !== '10:00' ||
+      openingHours?.closes !== '01:30'
     ) {
-      fail(`${route}: horario estructurado debe ser 11:00-00:00 todos los días`);
+      fail(`${route}: el horario estructurado de verano debe ser 10:00-01:30 todos los días`);
     }
 
     for (const marker of [
       '<span class="stat-num">4.8★</span>',
       '<span class="stat-num">+800</span>',
       '<p class="loc-addr">Carrer Dr. Pi i Sunyer, 6</p>',
-      '<span>11:00 – 00:00</span>',
+      '<span>10:00 – 01:30</span>',
     ]) {
       if (count(html, marker) !== 1) fail(`${route}: dato público ausente o duplicado ${marker}`);
     }
-    for (const staleFact of ['4.9★', '+650', '+600 ', 'reviewCount', '10:30 –', '11:00 – 23:00', 'Google y TripAdvisor', 'Google i TripAdvisor', 'Google and TripAdvisor', 'Google et TripAdvisor', 'Google en TripAdvisor', 'Google und TripAdvisor']) {
+    for (const staleFact of ['4.9★', '+650', '+600 ', 'reviewCount', '10:30 –', '11:00 – 23:00', '11:00 – 00:00', 'Google y TripAdvisor', 'Google i TripAdvisor', 'Google and TripAdvisor', 'Google et TripAdvisor', 'Google en TripAdvisor', 'Google und TripAdvisor']) {
       if (html.includes(staleFact)) fail(`${route}: dato público obsoleto ${staleFact}`);
     }
   } else {
