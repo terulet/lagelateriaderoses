@@ -11,7 +11,7 @@
 
 ## Arquitectura actual
 
-Hay diez URLs indexables y una página 404:
+Hay catorce URLs indexables y una página 404:
 
 ```text
 /                                      ES y x-default
@@ -24,6 +24,10 @@ Hay diez URLs indexables y una página 404:
 /fr/meilleur-glacier-roses/            guía de elección FR
 /fr/meilleures-plages-roses/           guía informativa FR
 /fr/que-faire-a-roses/                 guía informativa FR
+/nl/ijssalon-roses/                    guía comercial NL
+/nl/beste-ijssalon-roses/              guía de elección NL
+/nl/stranden-roses/                    guía informativa NL
+/nl/wat-te-doen-in-roses/              guía informativa NL
 /404.html                              utilidad no indexable
 ```
 
@@ -31,8 +35,9 @@ Las seis portadas son documentos independientes con CSS y JavaScript inline.
 El contenido visible esencial ya está localizado en el HTML; el diccionario
 `i18n` solo mejora la experiencia y también contiene los seis idiomas.
 
-Las cuatro guías francesas conservan sus preguntas visibles, pero no publican
-`FAQPage`: Google dejó de mostrar ese resultado enriquecido en mayo de 2026.
+Las cuatro guías francesas y las cuatro neerlandesas conservan sus preguntas
+visibles, pero no publican `FAQPage`. Cada pareja FR/NL declara `hreflang`
+recíproco; `x-default` conserva la versión francesa de cada guía.
 
 ## Datos oficiales y límites factuales
 
@@ -66,6 +71,7 @@ azúcar añadido, distancia exacta a la playa o satisfacción garantizada.
 - El hero debe conservar dimensiones, `fetchpriority="high"` y no ser lazy.
 - Las imágenes posteriores al hero deben conservar dimensiones y lazy loading.
 - Los presupuestos de tamaño se validan en CI.
+- Las nuevas guías NL comparten `/assets/guide-p14.css`; no duplicar ese CSS.
 
 ## Schema
 
@@ -80,16 +86,27 @@ azúcar añadido, distancia exacta a la playa o satisfacción garantizada.
 
 ```powershell
 node .github/scripts/validate-internal-architecture.mjs .
+node .github/scripts/test-multilingual-p14.mjs
 node .github/scripts/test-factual-contracts.mjs
 node .github/scripts/performance-budget.mjs .
 node .github/scripts/test-performance-budget.mjs
 node .github/scripts/test-monitor-production-seo.mjs
+node .github/scripts/test-local-presence-audit.mjs
+node .github/scripts/local-presence-audit.mjs . --static
 git diff --check
 ```
 
 El workflow `SEO validation` ejecuta los mismos contratos en cada PR y en main.
 Después de desplegar debe ejecutarse `SEO production monitor`, que compara la
 producción con el repositorio y comprueba páginas, recursos, redirecciones y 404.
+El workflow `Local presence audit` comprueba semanalmente el manifiesto NAP,
+los perfiles públicos conocidos y la cola de verificaciones humanas. Una
+respuesta HTTP externa nunca demuestra por sí sola que la ficha sea correcta.
+
+La fuente maestra de presencia local es `.github/data/local-presence.json`.
+TripAdvisor, Apple Maps, Bing Places y Waze permanecen en `needs_human` hasta
+que el propietario confirme sus fichas. El número de WhatsApp `+34647319686`
+aparece en la web pero sigue marcado para confirmación del propietario.
 
 ## Flujo de publicación
 
@@ -102,5 +119,6 @@ producción con el repositorio y comprueba páginas, recursos, redirecciones y 4
 7. Solicitar rastreo solo cuando haya un cambio material nuevo; no repetir
    solicitudes idénticas porque no aumenta la prioridad.
 
-Los cambios editoriales de P9 deben esperar una ventana homogénea en Search
-Console antes de modificar títulos, H1, anchors o consolidar URLs.
+Los contratos franceses de P9 deben esperar una ventana homogénea en Search
+Console. P14 separa la portada NL de cuatro intenciones neerlandesas nuevas;
+no volver a solaparlas sin datos suficientes de Search Console.

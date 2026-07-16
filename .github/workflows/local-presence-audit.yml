@@ -1,0 +1,39 @@
+name: Local presence audit
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 5 * * 3'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: local-presence-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+      - name: Test local presence audit
+        run: node .github/scripts/test-local-presence-audit.mjs
+      - name: Audit local presence
+        run: node .github/scripts/local-presence-audit.mjs . --public --strict-public --report artifacts/local-presence-report.md
+      - name: Upload local presence report
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: local-presence-report
+          path: artifacts/local-presence-report.md
+          if-no-files-found: error
+          retention-days: 30

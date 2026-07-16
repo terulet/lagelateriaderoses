@@ -24,6 +24,8 @@ jobs:
           node-version: 24
       - name: Validate SEO architecture and factual contracts
         run: node .github/scripts/validate-internal-architecture.mjs .
+      - name: Test multilingual P14 mutations
+        run: node .github/scripts/test-multilingual-p14.mjs
       - name: Test factual contract mutations
         run: node .github/scripts/test-factual-contracts.mjs
       - name: Validate static performance budgets
@@ -32,3 +34,7 @@ jobs:
         run: node .github/scripts/test-performance-budget.mjs
       - name: Test production monitor
         run: node .github/scripts/test-monitor-production-seo.mjs
+      - name: Test local presence audit
+        run: node .github/scripts/test-local-presence-audit.mjs
+      - name: Validate local presence consistency
+        run: node .github/scripts/local-presence-audit.mjs . --static

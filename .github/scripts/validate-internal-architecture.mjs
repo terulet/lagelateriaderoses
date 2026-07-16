@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { findRetiredClaims } from './factual-contracts.mjs';
+import { ROUTES } from './monitor-production-seo.mjs';
 
 const root = path.resolve(process.argv[2] || '.');
 const origin = 'https://lagelateriaderoses.com';
@@ -45,23 +46,22 @@ const expectedReviewOrigins = new Map([
   ['nl', ['Verenigd Koninkrijk · Google · Zomer 2024', 'Verenigd Koninkrijk · Google · Juli 2025', 'Duitsland · Google · Augustus 2024', 'Catalonië · Google · Augustus 2025', 'Frankrijk · Google · Juli 2024', 'Verenigd Koninkrijk · Google · Zomer 2025']],
 ]);
 
-const routes = new Map([
-  ['/', 'index.html'],
-  ['/ca/', 'ca/index.html'],
-  ['/en/', 'en/index.html'],
-  ['/fr/', 'fr/index.html'],
-  ['/de/', 'de/index.html'],
-  ['/nl/', 'nl/index.html'],
-  ['/fr/glacier-roses/', 'fr/glacier-roses/index.html'],
-  ['/fr/meilleur-glacier-roses/', 'fr/meilleur-glacier-roses/index.html'],
-  ['/fr/meilleures-plages-roses/', 'fr/meilleures-plages-roses/index.html'],
-  ['/fr/que-faire-a-roses/', 'fr/que-faire-a-roses/index.html'],
-]);
+const routes = new Map(ROUTES);
 const utilityFiles = ['404.html'];
 
 const homes = ['/', '/ca/', '/en/', '/fr/', '/de/', '/nl/'];
-const guides = [...routes.keys()].filter(route => route.startsWith('/fr/') && route !== '/fr/');
-const informationalGuides = new Set(['/fr/meilleures-plages-roses/', '/fr/que-faire-a-roses/']);
+const guideMetadata = new Map([
+  ['/fr/glacier-roses/', { language: 'fr', home: '/fr/', counterpart: '/nl/ijssalon-roses/', commercial: true }],
+  ['/fr/meilleur-glacier-roses/', { language: 'fr', home: '/fr/', counterpart: '/nl/beste-ijssalon-roses/', commercial: true }],
+  ['/fr/meilleures-plages-roses/', { language: 'fr', home: '/fr/', counterpart: '/nl/stranden-roses/', commercial: false }],
+  ['/fr/que-faire-a-roses/', { language: 'fr', home: '/fr/', counterpart: '/nl/wat-te-doen-in-roses/', commercial: false }],
+  ['/nl/ijssalon-roses/', { language: 'nl', home: '/nl/', counterpart: '/fr/glacier-roses/', commercial: true }],
+  ['/nl/beste-ijssalon-roses/', { language: 'nl', home: '/nl/', counterpart: '/fr/meilleur-glacier-roses/', commercial: true }],
+  ['/nl/stranden-roses/', { language: 'nl', home: '/nl/', counterpart: '/fr/meilleures-plages-roses/', commercial: false }],
+  ['/nl/wat-te-doen-in-roses/', { language: 'nl', home: '/nl/', counterpart: '/fr/que-faire-a-roses/', commercial: false }],
+]);
+const guides = [...guideMetadata.keys()];
+const informationalGuides = new Set([...guideMetadata].filter(([, metadata]) => !metadata.commercial).map(([route]) => route));
 const expectedHreflang = new Map([
   ['es', `${origin}/`],
   ['ca', `${origin}/ca/`],
@@ -71,7 +71,7 @@ const expectedHreflang = new Map([
   ['nl', `${origin}/nl/`],
   ['x-default', `${origin}/`],
 ]);
-const frenchIntentContracts = new Map([
+const intentContracts = new Map([
   ['/fr/', {
     title: 'La Gelateria de Roses | Gelato italien au centre-ville',
     description: 'Découvrez La Gelateria de Roses : gelato italien, sorbets, crêpes et gaufres au centre-ville. Retrouvez notre adresse, nos horaires et les avis Google.',
@@ -86,6 +86,21 @@ const frenchIntentContracts = new Map([
     title: 'Meilleur glacier à Roses : comment choisir ? | La Gelateria',
     description: 'Quels critères regarder pour choisir un glacier à Roses ? Qualité, choix, emplacement et avis Google : découvrez l’approche de La Gelateria de Roses.',
     h1: 'Comment choisir le meilleur glacier à Roses ?',
+  }],
+  ['/nl/', {
+    title: 'La Gelateria de Roses | Dagelijks gemaakte gelato',
+    description: 'Bezoek La Gelateria de Roses in het centrum van Roses. We maken gelato elke dag in de ruimte die zichtbaar is vanuit de winkel.',
+    h1: 'La Gelateria de Roses: dagelijks gemaakte gelato in het centrum',
+  }],
+  ['/nl/ijssalon-roses/', {
+    title: 'IJssalon in Roses: gelato, adres en zomeruren',
+    description: 'Op zoek naar een ijssalon in Roses? We maken dagelijks gelato in de ruimte die zichtbaar is vanuit de winkel. Bekijk ons adres, de zomeruren en de route.',
+    h1: 'Een ijssalon in Roses met dagelijks gemaakte gelato',
+  }],
+  ['/nl/beste-ijssalon-roses/', {
+    title: 'Beste ijssalon in Roses? Zo kies je een goede gelateria',
+    description: 'Wat maakt een goede ijssalon in Roses? Let op dagelijkse bereiding, een zichtbare werkruimte, duidelijke bezoekersinformatie en echte Google-recensies.',
+    h1: 'Hoe kies je de beste ijssalon in Roses?',
   }],
 ]);
 const allowedFrenchIntentAnchors = new Map([
@@ -231,20 +246,24 @@ for (const [route, relative] of routes) {
   descriptions.add(description);
   headings.add(h1);
 
-  const intentContract = frenchIntentContracts.get(route);
+  const intentContract = intentContracts.get(route);
   if (intentContract) {
-    if (title !== intentContract.title) fail(`${route}: title fuera del contrato de intención P9`);
-    if (description !== intentContract.description) fail(`${route}: description fuera del contrato de intención P9`);
-    if (h1 !== intentContract.h1) fail(`${route}: H1 fuera del contrato de intención P9`);
+    if (title !== intentContract.title) fail(`${route}: title fuera del contrato de intención P9/P14`);
+    if (description !== intentContract.description) fail(`${route}: description fuera del contrato de intención P9/P14`);
+    if (h1 !== intentContract.h1) fail(`${route}: H1 fuera del contrato de intención P9/P14`);
     for (const marker of [
       `<meta property="og:title" content="${intentContract.title}"`,
       `<meta property="og:description" content="${intentContract.description}"`,
       `<meta name="twitter:title" content="${intentContract.title}"`,
       `<meta name="twitter:description" content="${intentContract.description}"`,
     ]) {
-      if (!html.includes(marker)) fail(`${route}: metadato social fuera del contrato P9 ${marker}`);
+      if (!html.includes(marker)) fail(`${route}: metadato social fuera del contrato P9/P14 ${marker}`);
     }
   }
+
+  const expectedLanguage = route === '/' ? 'es' : route.split('/')[1];
+  const htmlLanguage = html.match(/<html\s+lang=["']([^"']+)["']/i)?.[1];
+  if (htmlLanguage !== expectedLanguage) fail(`${route}: html lang ${htmlLanguage || 'ausente'} != ${expectedLanguage}`);
 
   const canonicalMatches = [...html.matchAll(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["'][^>]*>/gi)].map(match => match[1]);
   const expectedCanonical = `${origin}${route}`;
@@ -263,10 +282,17 @@ for (const [route, relative] of routes) {
       if (alternates.get(language) !== url) fail(`${route}: hreflang ${language} != ${url}`);
     }
   } else {
-    if (alternates.get('fr') !== expectedCanonical) fail(`${route}: falta hreflang fr propio`);
-    if (alternates.has('x-default') && alternates.get('x-default') !== expectedCanonical) fail(`${route}: x-default no autorreferencial`);
-    for (const language of alternates.keys()) {
-      if (!['fr', 'x-default'].includes(language)) fail(`${route}: alternate ficticio ${language}`);
+    const guide = guideMetadata.get(route);
+    const frenchRoute = guide.language === 'fr' ? route : guide.counterpart;
+    const dutchRoute = guide.language === 'nl' ? route : guide.counterpart;
+    const expectedGuideAlternates = new Map([
+      ['fr', `${origin}${frenchRoute}`],
+      ['nl', `${origin}${dutchRoute}`],
+      ['x-default', `${origin}${frenchRoute}`],
+    ]);
+    if (alternates.size !== expectedGuideAlternates.size) fail(`${route}: hreflang de guía count ${alternates.size}`);
+    for (const [language, url] of expectedGuideAlternates) {
+      if (alternates.get(language) !== url) fail(`${route}: hreflang ${language} != ${url}`);
     }
   }
 
@@ -292,8 +318,9 @@ for (const [route, relative] of routes) {
   ) {
     fail(`${route}: WebPage.isPartOf no identifica el WebSite canónico`);
   }
-  const expectedLanguage = route === '/' ? 'es' : route.split('/')[1];
   if (webPage?.inLanguage !== expectedLanguage) fail(`${route}: WebPage.inLanguage ${webPage?.inLanguage} != ${expectedLanguage}`);
+
+  for (const label of findRetiredClaims(html)) fail(`${route}: reclamo retirado detectado (${label})`);
 
   if (homes.includes(route)) {
     if (typeCount('IceCreamShop') !== 1) fail(`${route}: IceCreamShop count ${typeCount('IceCreamShop')}`);
@@ -330,8 +357,6 @@ for (const [route, relative] of routes) {
       if (!html.includes(`e1d:"${approvedCopy}"`)) fail(`${route}: falta copia factual i18n ${language} sobre elaboración diaria y obrador visible`);
     }
 
-    for (const label of findRetiredClaims(html)) fail(`${route}: reclamo retirado detectado (${label})`);
-
     const reviewCards = [...html.matchAll(/<div class="rev-card\b[\s\S]*?<div class="stars-sm">[\s\S]*?<\/div><\/div>/g)].map(match => match[0]);
     if (reviewCards.length !== 6) fail(`${route}: deben existir exactamente seis reseñas de clientes`);
     const reviewAuthors = reviewCards.map(card => decodeEntities(card.match(/<p class="rev-a">([^<]+)<\/p>/)?.[1] || ''));
@@ -367,13 +392,18 @@ for (const [route, relative] of routes) {
     if (typeCount('BreadcrumbList') !== 1) fail(`${route}: BreadcrumbList count ${typeCount('BreadcrumbList')}`);
     if (typeCount('FAQPage') !== 0) fail(`${route}: FAQPage retirado por Google debe permanecer ausente`);
     if (count(html, '<details>') !== 4) fail(`${route}: las cuatro preguntas visibles deben conservarse sin FAQPage`);
+    const guide = guideMetadata.get(route);
     const breadcrumb = entities.find(entity => entity?.['@type'] === 'BreadcrumbList');
     const items = breadcrumb?.itemListElement || [];
-    if (items.length !== 2 || items[0]?.position !== 1 || items[0]?.item !== `${origin}/fr/` || items[1]?.position !== 2 || items[1]?.item !== expectedCanonical) {
-      fail(`${route}: breadcrumb no conecta /fr/ con la canonical`);
+    if (items.length !== 2 || items[0]?.position !== 1 || items[0]?.item !== `${origin}${guide.home}` || items[1]?.position !== 2 || items[1]?.item !== expectedCanonical) {
+      fail(`${route}: breadcrumb no conecta ${guide.home} con la canonical`);
     }
+    const socialImageAlt = guide.language === 'fr'
+      ? 'Vitrine de gelato de La Gelateria de Roses'
+      : 'Gelato in de vitrine van La Gelateria de Roses';
     const requiredSocial = [
       '<meta property="og:type" content="article">',
+      `<meta property="og:locale" content="${guide.language === 'fr' ? 'fr_FR' : 'nl_NL'}">`,
       `<meta property="og:title" content="${title}">`,
       `<meta property="og:description" content="${description}">`,
       `<meta property="og:url" content="${expectedCanonical}">`,
@@ -381,12 +411,12 @@ for (const [route, relative] of routes) {
       '<meta property="og:image:type" content="image/jpeg">',
       '<meta property="og:image:width" content="1400">',
       '<meta property="og:image:height" content="788">',
-      '<meta property="og:image:alt" content="Vitrine de gelato de La Gelateria de Roses">',
+      `<meta property="og:image:alt" content="${socialImageAlt}">`,
       '<meta name="twitter:card" content="summary_large_image">',
       `<meta name="twitter:title" content="${title}">`,
       `<meta name="twitter:description" content="${description}">`,
       '<meta name="twitter:image" content="https://lagelateriaderoses.com/assets/img/img-02-d78c59c65e5e.jpg">',
-      '<meta name="twitter:image:alt" content="Vitrine de gelato de La Gelateria de Roses">',
+      `<meta name="twitter:image:alt" content="${socialImageAlt}">`,
     ];
     for (const marker of requiredSocial) {
       if (count(html, marker) !== 1) fail(`${route}: social marker ausente o duplicado ${marker}`);
@@ -460,13 +490,15 @@ for (const [targetRoute, expectedAnchor] of [
 }
 
 for (const guide of guides) {
-  const linksFromFr = directLinks.get('/fr/') || [];
-  if (!linksFromFr.some(link => link.targetRoute === guide && !link.nofollow)) fail(`/fr/: falta enlace directo follow a ${guide}`);
-  if (!graph.get(guide)?.has('/fr/')) fail(`${guide}: falta enlace de retorno a /fr/`);
+  const metadata = guideMetadata.get(guide);
+  const linksFromHome = directLinks.get(metadata.home) || [];
+  if (!linksFromHome.some(link => link.targetRoute === guide && !link.nofollow)) fail(`${metadata.home}: falta enlace directo follow a ${guide}`);
+  if (!graph.get(guide)?.has(metadata.home)) fail(`${guide}: falta enlace de retorno a ${metadata.home}`);
 }
-for (const home of homes.filter(route => route !== '/fr/')) {
+for (const home of homes) {
   for (const guide of guides) {
-    if (graph.get(home)?.has(guide)) fail(`${home}: no debe copiar enlaces editoriales franceses a ${guide}`);
+    const metadata = guideMetadata.get(guide);
+    if (home !== metadata.home && graph.get(home)?.has(guide)) fail(`${home}: no debe copiar enlaces editoriales ${metadata.language} a ${guide}`);
   }
 }
 
@@ -490,7 +522,7 @@ for (const home of homes) {
   const missing = [...routes.keys()].filter(route => !depth.has(route));
   if (missing.length) fail(`${home}: no alcanza ${missing.join(', ')}`);
   for (const guide of guides) {
-    const maximum = home === '/fr/' ? 1 : 2;
+    const maximum = home === guideMetadata.get(guide).home ? 1 : 2;
     if ((depth.get(guide) ?? Infinity) > maximum) fail(`${home}: profundidad a ${guide} > ${maximum}`);
   }
 }
@@ -499,7 +531,7 @@ const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/gi)].map(match => match[1]);
 const expectedUrls = [...routes.keys()].map(route => `${origin}${route}`).sort();
 if (JSON.stringify([...new Set(sitemapUrls)].sort()) !== JSON.stringify(expectedUrls) || sitemapUrls.length !== expectedUrls.length) {
-  fail('sitemap: las URLs no coinciden exactamente con las 10 canonicals');
+  fail(`sitemap: las URLs no coinciden exactamente con las ${routes.size} canonicals`);
 }
 for (const url of sitemapUrls) {
   const parsed = new URL(url);
@@ -540,10 +572,13 @@ if (!fs.existsSync(workflowFile)) {
     'persist-credentials: false',
     'timeout-minutes: 5',
     'node .github/scripts/validate-internal-architecture.mjs .',
+    'node .github/scripts/test-multilingual-p14.mjs',
     'node .github/scripts/test-factual-contracts.mjs',
     'node .github/scripts/performance-budget.mjs .',
     'node .github/scripts/test-performance-budget.mjs',
     'node .github/scripts/test-monitor-production-seo.mjs',
+    'node .github/scripts/test-local-presence-audit.mjs',
+    'node .github/scripts/local-presence-audit.mjs . --static',
   ]) {
     if (!workflow.includes(marker)) fail(`workflow SEO: falta ${marker}`);
   }
@@ -556,8 +591,36 @@ for (const script of [
   '.github/scripts/test-performance-budget.mjs',
   '.github/scripts/monitor-production-seo.mjs',
   '.github/scripts/test-monitor-production-seo.mjs',
+  '.github/scripts/local-presence-audit.mjs',
+  '.github/scripts/test-local-presence-audit.mjs',
+  '.github/scripts/test-multilingual-p14.mjs',
+  '.github/data/local-presence.json',
 ]) {
   if (!fs.existsSync(path.join(root, script))) fail(`falta ${script}`);
+}
+
+const presenceWorkflowFile = path.join(root, '.github/workflows/local-presence-audit.yml');
+if (!fs.existsSync(presenceWorkflowFile)) {
+  fail('falta el workflow de presencia local');
+} else {
+  const workflow = fs.readFileSync(presenceWorkflowFile, 'utf8');
+  for (const marker of [
+    'workflow_dispatch:',
+    'schedule:',
+    "cron: '47 5 * * 3'",
+    'contents: read',
+    'cancel-in-progress: false',
+    'timeout-minutes: 10',
+    'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0',
+    'actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0',
+    'actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6',
+    'node-version: 24',
+    'persist-credentials: false',
+    'node .github/scripts/test-local-presence-audit.mjs',
+    'node .github/scripts/local-presence-audit.mjs . --public --strict-public --report artifacts/local-presence-report.md',
+  ]) {
+    if (!workflow.includes(marker)) fail(`workflow de presencia local: falta ${marker}`);
+  }
 }
 
 const productionWorkflowFile = path.join(root, '.github/workflows/seo-production-monitor.yml');
@@ -588,4 +651,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('PASS: SEO architecture validates 10/10 indexable pages plus 404; P13 enforces seasonal Schema accuracy, canonical identity and static performance budgets while P12 factual, P11 production and P9 French intent contracts remain consistent.');
+console.log(`PASS: SEO architecture validates ${routes.size}/${routes.size} indexable pages plus 404; P14 adds reciprocal French/Dutch guides while P13 performance, P12 factual, P11 production and P9 French intent contracts remain consistent.`);

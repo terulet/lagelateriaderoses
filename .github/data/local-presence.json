@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "business": {
+    "id": "https://lagelateriaderoses.com/#business",
+    "name": "La Gelateria de Roses",
+    "url": "https://lagelateriaderoses.com/",
+    "telephone": "+34972253795",
+    "email": "info@lagelateriaderoses.com",
+    "address": {
+      "streetAddress": "Carrer Dr. Pi i Sunyer, 6",
+      "postalCode": "17480",
+      "addressLocality": "Roses",
+      "addressRegion": "Girona",
+      "addressCountry": "ES"
+    },
+    "geo": {
+      "latitude": 42.2668,
+      "longitude": 3.176
+    },
+    "googlePlaceId": "ChIJ2SAQYFJhuhIRpVJqYaT7svc",
+    "mapUrl": "https://www.google.com/maps/place/?q=place_id:ChIJ2SAQYFJhuhIRpVJqYaT7svc"
+  },
+  "contactChannels": {
+    "whatsapp": {
+      "value": "+34647319686",
+      "status": "needs_owner_verification"
+    }
+  },
+  "website": {
+    "businessSchemaRoutes": ["/", "/ca/", "/en/", "/fr/", "/de/", "/nl/"]
+  },
+  "profiles": [
+    {
+      "platform": "google_maps",
+      "status": "public_reference_only",
+      "publicUrl": "https://www.google.com/maps/place/?q=place_id:ChIJ2SAQYFJhuhIRpVJqYaT7svc",
+      "expectedHosts": ["www.google.com", "consent.google.com"],
+      "httpCheck": "advisory",
+      "humanVerification": ["ownership", "primaryCategory", "hours", "website", "pin", "duplicates"]
+    },
+    {
+      "platform": "google_reviews",
+      "status": "repository_confirmed",
+      "publicUrl": "https://g.page/r/CaVSamGk-7L3EBM",
+      "expectedHosts": ["g.page", "www.google.com", "consent.google.com"],
+      "httpCheck": "advisory",
+      "humanVerification": ["listingIdentity", "reviewDestination"]
+    },
+    {
+      "platform": "instagram",
+      "status": "owner_confirmed",
+      "publicUrl": "https://www.instagram.com/lagelateriaderoses/",
+      "expectedHosts": ["www.instagram.com", "instagram.com"],
+      "expectedHandle": "lagelateriaderoses",
+      "httpCheck": "advisory",
+      "humanVerification": ["bio", "websiteLink", "location", "accountControl"]
+    },
+    {
+      "platform": "facebook",
+      "status": "owner_confirmed",
+      "publicUrl": "https://www.facebook.com/lagelateriaderoses",
+      "expectedHosts": ["www.facebook.com", "facebook.com", "m.facebook.com"],
+      "expectedHandle": "lagelateriaderoses",
+      "httpCheck": "advisory",
+      "humanVerification": ["aboutData", "websiteLink", "location", "accountControl"]
+    },
+    {
+      "platform": "tripadvisor",
+      "status": "needs_human",
+      "publicUrl": null,
+      "expectedHosts": ["www.tripadvisor.com", "www.tripadvisor.es", "www.tripadvisor.fr"],
+      "httpCheck": "skip",
+      "humanVerification": ["existingListing", "ownership", "duplicates", "NAP", "category"]
+    },
+    {
+      "platform": "apple_maps",
+      "status": "needs_human",
+      "publicUrl": null,
+      "expectedHosts": ["maps.apple.com"],
+      "httpCheck": "skip",
+      "humanVerification": ["existingPlaceCard", "ownership", "NAP", "pin", "hours"]
+    },
+    {
+      "platform": "bing_places",
+      "status": "needs_human",
+      "publicUrl": null,
+      "expectedHosts": ["www.bing.com"],
+      "httpCheck": "skip",
+      "humanVerification": ["existingListing", "ownership", "NAP", "pin", "hours"]
+    },
+    {
+      "platform": "waze",
+      "status": "needs_human",
+      "publicUrl": null,
+      "expectedHosts": ["www.waze.com", "waze.com"],
+      "httpCheck": "skip",
+      "humanVerification": ["existingVenue", "pin", "entrance", "category", "duplicates"]
+    }
+  ]
+}

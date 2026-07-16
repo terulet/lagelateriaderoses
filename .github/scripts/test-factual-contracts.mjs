@@ -20,7 +20,7 @@ for (const [html, label] of blocked) {
   if (!matches.includes(label)) throw new Error(`No se bloqueó ${label}: ${html}`);
 }
 
-const allowed = '<style>.hero{width:100%}</style><!-- 50+ en nota interna --><p>Helado artesanal elaborado cada día.</p>';
+const allowed = '<style>.hero{width:100%}</style><!-- 50+ en nota interna --><iframe width="100%" style="width:100%"></iframe><p>Helado artesanal elaborado cada día.</p>';
 if (findRetiredClaims(allowed).length) throw new Error(`Falso positivo factual: ${findRetiredClaims(allowed).join(', ')}`);
 
 console.log(`PASS: ${blocked.length} mutaciones factuales bloqueadas y control positivo sin falsos resultados.`);
