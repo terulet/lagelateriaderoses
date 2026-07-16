@@ -333,7 +333,7 @@ for (const [route, relative] of routes) {
     if (business?.email !== businessEmail) fail(`${route}: email del negocio incorrecto`);
     if (business?.address?.streetAddress !== businessStreetAddress) fail(`${route}: dirección del negocio incorrecta`);
     if (business?.address?.['@type'] !== 'PostalAddress' || business?.address?.postalCode !== '17480' || business?.address?.addressLocality !== 'Roses' || business?.address?.addressRegion !== 'Girona' || business?.address?.addressCountry !== 'ES') fail(`${route}: dirección estructurada del negocio incompleta o incorrecta`);
-    if (business?.geo?.['@type'] !== 'GeoCoordinates' || business?.geo?.latitude !== 42.2668 || business?.geo?.longitude !== 3.176) fail(`${route}: coordenadas del negocio incorrectas`);
+    if (business?.geo?.['@type'] !== 'GeoCoordinates' || business?.geo?.latitude !== 42.2626511 || business?.geo?.longitude !== 3.1753954) fail(`${route}: coordenadas del negocio incorrectas`);
     if (business?.hasMap !== businessMap) fail(`${route}: mapa del negocio incorrecto`);
     if (JSON.stringify(business?.sameAs) !== JSON.stringify(businessProfiles)) fail(`${route}: perfiles sociales del negocio incorrectos`);
     if (JSON.stringify(Object.keys(business || {}).sort()) !== JSON.stringify(businessKeys)) fail(`${route}: IceCreamShop contiene propiedades no verificadas`);

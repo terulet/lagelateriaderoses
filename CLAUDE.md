@@ -104,9 +104,11 @@ los perfiles públicos conocidos y la cola de verificaciones humanas. Una
 respuesta HTTP externa nunca demuestra por sí sola que la ficha sea correcta.
 
 La fuente maestra de presencia local es `.github/data/local-presence.json`.
-TripAdvisor, Apple Maps, Bing Places y Waze permanecen en `needs_human` hasta
-que el propietario confirme sus fichas. El número de WhatsApp `+34647319686`
-aparece en la web pero sigue marcado para confirmación del propietario.
+TripAdvisor y Bing tienen una ficha pública identificada, pero su control sigue
+pendiente de comprobar desde las cuentas del propietario. Apple Maps y Waze
+permanecen en `needs_human` hasta descartar duplicados dentro de sus plataformas.
+El propietario confirmó el 16 de julio de 2026 que el número oficial de WhatsApp
+es `+34647319686`.
 
 ## Flujo de publicación
 

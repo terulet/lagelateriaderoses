@@ -110,6 +110,7 @@ export function auditStatic({ root = '.', manifest = loadManifest(root) } = {}) 
     .sort();
   const profilesByPlatform = new Map(manifest.profiles.map(profile => [profile.platform, profile]));
   const schemaRoutes = new Set(manifest.website?.businessSchemaRoutes || []);
+  const expectedMapEmbed = `https://www.google.com/maps?q=place_id%3A${business.googlePlaceId}&amp;output=embed`;
   for (const route of schemaRoutes) {
     const relative = ROUTES.get(route);
     if (!relative) {
@@ -117,6 +118,7 @@ export function auditStatic({ root = '.', manifest = loadManifest(root) } = {}) 
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    if (!html.includes(`src="${expectedMapEmbed}"`)) errors.push(`${route}: mapa embebido no usa el Google Place ID del manifiesto`);
     const entities = parseJsonLd(html, route, errors);
     const entity = entities.find(item => item?.['@type'] === 'IceCreamShop');
     if (!entity) {
