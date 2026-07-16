@@ -14,8 +14,8 @@
       "addressCountry": "ES"
     },
     "geo": {
-      "latitude": 42.2668,
-      "longitude": 3.176
+      "latitude": 42.2626511,
+      "longitude": 3.1753954
     },
     "googlePlaceId": "ChIJ2SAQYFJhuhIRpVJqYaT7svc",
     "mapUrl": "https://www.google.com/maps/place/?q=place_id:ChIJ2SAQYFJhuhIRpVJqYaT7svc"
@@ -23,7 +23,7 @@
   "contactChannels": {
     "whatsapp": {
       "value": "+34647319686",
-      "status": "needs_owner_verification"
+      "status": "owner_confirmed"
     }
   },
   "website": {
@@ -66,10 +66,10 @@
     },
     {
       "platform": "tripadvisor",
-      "status": "needs_human",
-      "publicUrl": null,
+      "status": "public_reference_only",
+      "publicUrl": "https://www.tripadvisor.es/Restaurant_Review-g262060-d10093926-Reviews-La_Gelateria_de_Roses-Roses_Costa_Brava_Province_of_Girona_Catalonia.html",
       "expectedHosts": ["www.tripadvisor.com", "www.tripadvisor.es", "www.tripadvisor.fr"],
-      "httpCheck": "skip",
+      "httpCheck": "advisory",
       "humanVerification": ["existingListing", "ownership", "duplicates", "NAP", "category"]
     },
     {
@@ -82,10 +82,10 @@
     },
     {
       "platform": "bing_places",
-      "status": "needs_human",
-      "publicUrl": null,
+      "status": "public_reference_only",
+      "publicUrl": "https://www.bing.com/maps?q=La%20Gelateria%20de%20Roses%2C%20Carrer%20Dr.%20Pi%20i%20Sunyer%206%2C%2017480%20Roses",
       "expectedHosts": ["www.bing.com"],
-      "httpCheck": "skip",
+      "httpCheck": "advisory",
       "humanVerification": ["existingListing", "ownership", "NAP", "pin", "hours"]
     },
     {

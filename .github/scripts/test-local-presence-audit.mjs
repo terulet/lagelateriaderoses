@@ -26,7 +26,7 @@ const test = async (name, callback) => {
 await test('manifiesto maestro válido con avisos humanos explícitos', () => {
   const result = validateManifest(manifest);
   assert.deepEqual(result.errors, []);
-  assert.ok(result.warnings.some(item => item.includes('tripadvisor')));
+  assert.ok(result.warnings.some(item => item.includes('apple_maps')));
   assert.ok(result.warnings.some(item => item.includes('ownership')));
 });
 
@@ -76,12 +76,28 @@ await test('clasifica estados HTTP sin convertir bloqueos en desapariciones', ()
   assert.equal(classifyPublicStatus(503), 'WARNING');
 });
 
-await test('auditoría estática real comprueba 14 rutas y conserva WhatsApp como aviso', () => {
+await test('auditoría estática real comprueba 14 rutas con WhatsApp confirmado', () => {
   const result = auditStatic({ root, manifest });
   assert.deepEqual(result.errors, []);
   assert.equal(result.checkedRoutes, 14);
-  assert.equal(result.warnings.filter(item => item.includes('WhatsApp')).length, 1);
-  assert.ok(result.warnings.some(item => item.includes('/fr/que-faire-a-roses/')));
+  assert.equal(result.warnings.filter(item => item.includes('WhatsApp')).length, 0);
+  assert.ok(result.warnings.some(item => item.includes('apple_maps')));
+});
+
+await test('detecta un mapa embebido que no usa el Place ID maestro', () => {
+  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'gelateria-presence-'));
+  try {
+    fs.cpSync(root, fixture, { recursive: true, filter: source => !['.git', 'artifacts'].includes(path.basename(source)) });
+    const filename = path.join(fixture, 'nl/index.html');
+    const before = fs.readFileSync(filename, 'utf8');
+    const after = before.replace('https://www.google.com/maps?q=place_id%3AChIJ2SAQYFJhuhIRpVJqYaT7svc&amp;output=embed', 'https://www.google.com/maps?q=42.2668%2C3.176&amp;output=embed');
+    assert.notEqual(after, before, 'la mutación del mapa debe aplicarse');
+    fs.writeFileSync(filename, after, 'utf8');
+    const result = auditStatic({ root: fixture, manifest });
+    assert.ok(result.errors.some(item => item.includes('mapa embebido')));
+  } finally {
+    fs.rmSync(fixture, { recursive: true, force: true });
+  }
 });
 
 await test('una mutación NAP rompe la consistencia interna', () => {
