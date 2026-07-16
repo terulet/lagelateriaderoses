@@ -15,6 +15,10 @@ export const ROUTES = new Map([
   ['/fr/meilleur-glacier-roses/', 'fr/meilleur-glacier-roses/index.html'],
   ['/fr/meilleures-plages-roses/', 'fr/meilleures-plages-roses/index.html'],
   ['/fr/que-faire-a-roses/', 'fr/que-faire-a-roses/index.html'],
+  ['/nl/ijssalon-roses/', 'nl/ijssalon-roses/index.html'],
+  ['/nl/beste-ijssalon-roses/', 'nl/beste-ijssalon-roses/index.html'],
+  ['/nl/stranden-roses/', 'nl/stranden-roses/index.html'],
+  ['/nl/wat-te-doen-in-roses/', 'nl/wat-te-doen-in-roses/index.html'],
 ]);
 
 const TEXT_FILES = new Map([

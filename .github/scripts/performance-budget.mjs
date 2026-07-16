@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { extractAssetUrls } from './monitor-production-seo.mjs';
+import { extractAssetUrls, ROUTES } from './monitor-production-seo.mjs';
 
 export const limits = Object.freeze({
   homeBytes: 130 * 1024,
@@ -20,12 +20,10 @@ export const homeFiles = [
   'nl/index.html',
 ];
 
-export const guideFiles = [
-  'fr/glacier-roses/index.html',
-  'fr/meilleur-glacier-roses/index.html',
-  'fr/meilleures-plages-roses/index.html',
-  'fr/que-faire-a-roses/index.html',
-];
+const homeRoutes = new Set(['/', '/ca/', '/en/', '/fr/', '/de/', '/nl/']);
+export const guideFiles = [...ROUTES]
+  .filter(([route]) => !homeRoutes.has(route))
+  .map(([, relative]) => relative);
 
 export const heroAssets = Object.freeze({
   portrait: '/assets/img/img-55-027c36da645b.webp',

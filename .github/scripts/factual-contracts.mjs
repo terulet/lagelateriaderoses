@@ -39,7 +39,8 @@ export function factualCorpusFromHtml(html) {
   const semanticHtml = html
     .replace(/<!--[\s\S]*?-->/g, '')
     .replace(/<style\b[\s\S]*?<\/style>/gi, '')
-    .replace(/<script\b[\s\S]*?<\/script>/gi, '');
+    .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+    .replace(/\s(?:width|height|style)=["'][^"']*["']/gi, '');
   return normalizeFactualText(`${semanticHtml}\n${jsonLd}\n${i18n}`);
 }
 
